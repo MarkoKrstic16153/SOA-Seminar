@@ -3,7 +3,7 @@ var express = require("express");
 var bodyparser = require("body-parser");
 var cors = require("cors");
 var path = require("path");
-
+const axios = require('axios');
 var app = express();
 
 const port = 3001;
@@ -19,6 +19,18 @@ app.listen(port, () => {
     res.send("Hello " + senzor);
   });
 
+  app.get("/upali/:temp", (req, res) => {
+    ciljnaTemperatura = req.params.temp;
+    console.log(ciljnaTemperatura);
+    upaliKlimu();
+    res.send("Upaljen " + senzor);
+  });
+
+  app.get("/ugasi", (req, res) => {
+    ugasiKlimu();
+    res.send("Ugasen " + senzor);
+  });
+
 let trenutnaTemperatura = 10 + Math.random()*20;//pocetna temperatura je izmedju 10 i 30 stepeni;
 let raste = Math.random()>0.5 ? true:false;// pocetno biramo rand trend temperature;
 let ukljucen = false;//da li radi ili ne;
@@ -27,7 +39,13 @@ let ciljnaTemperatura = -999;
 let timerRada = 0;
 
 const timer = rxjs.interval(1000);
-timer.subscribe(()=>{timerRada++;console.log(timerRada)});
+timer.subscribe(()=>{
+    console.log(timerRada);
+    promeniTemperaturu();
+    if(aktivan)
+    timerRada+=3;
+    posaljiPodatke();
+});
 
 function promeniTemperaturu(){
     if(raste)
@@ -49,6 +67,11 @@ function upaliKlimu(){
     daLiTrebaDaAktivna();
 }
 
+function ugasiKlimu(){
+    ukljucen = false;
+    aktivan = false;
+}
+
 function daLiTrebaDaAktivna(){
     if((ciljnaTemperatura > trenutnaTemperatura + trenutnaTemperatura*0.05) || (ciljnaTemperatura < 0.95*trenutnaTemperatura)){
         aktivan = true;
@@ -57,3 +80,18 @@ function daLiTrebaDaAktivna(){
     else 
         aktivan = false;
 }
+
+function posaljiPodatke(){
+    let poruka = {
+       vrednost: trenutnaTemperatura,
+       vremeRada: timerRada
+    };
+    console.log(poruka);
+     axios
+     .post('http://[::1]:3000/dans/klima', poruka)
+     .then(res => {
+     })
+     .catch(error => {
+       console.error(error)
+     })
+ }
