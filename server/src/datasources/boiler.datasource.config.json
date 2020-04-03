@@ -1,0 +1,6 @@
+{
+  "name": "Boiler",
+  "connector": "memory",
+  "localStorage": "",
+  "file": "./data/boiler.json"
+}

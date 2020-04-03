@@ -37,11 +37,14 @@ let ukljucen = false;//da li radi ili ne;
 let aktivan = false;//da li greje ili ne;
 let ciljnaTemperatura = -999;
 let timerRada = 0;
+let minTemp = 25;
+let maxTemp = 25;
 
-const timer = rxjs.interval(1000);
+const timer = rxjs.interval(2000);
 timer.subscribe(()=>{
     console.log(timerRada);
     promeniTemperaturu();
+    daLiTrebaDaAktivna();
     if(aktivan)
     timerRada+=3;
     posaljiPodatke();
@@ -52,7 +55,8 @@ function promeniTemperaturu(){
         trenutnaTemperatura++;
     else
         trenutnaTemperatura--;
-    raste = Math.random()<0.1 ? !raste:raste;
+    if(aktivan == false)
+        raste = Math.random()<0.1 ? !raste:raste;
 }
 
 function odrediTrend(novaCiljnaTemperatura){
@@ -64,6 +68,7 @@ function odrediTrend(novaCiljnaTemperatura){
 
 function upaliKlimu(){
     ukljucen = true;
+    //odrediTrend(ciljnaTemperatura);
     daLiTrebaDaAktivna();
 }
 
@@ -73,22 +78,43 @@ function ugasiKlimu(){
 }
 
 function daLiTrebaDaAktivna(){
-    if((ciljnaTemperatura > trenutnaTemperatura + trenutnaTemperatura*0.05) || (ciljnaTemperatura < 0.95*trenutnaTemperatura)){
-        aktivan = true;
-        odrediTrend();
+    if(ukljucen == true){
+        if(aktivan == false){
+            console.log("Ciljna" + ciljnaTemperatura)
+         if (trenutnaTemperatura > (ciljnaTemperatura - -1*3)){
+            console.log("Aktiviram Hladjenje!")
+            aktivan = true;
+            raste = false;
+        }
+        else if (trenutnaTemperatura < (ciljnaTemperatura - 3)){
+            console.log("Aktiviram Grejanje!")
+            aktivan = true;
+            raste = true;
+        }
     }
-    else 
-        aktivan = false;
+        else if((trenutnaTemperatura > (ciljnaTemperatura - 1)) && (trenutnaTemperatura  < (ciljnaTemperatura - -1*1)) && aktivan == true){
+            console.log("DeAktiviram Klimu!");
+            aktivan = false;
+        }
+    }
 }
 
 function posaljiPodatke(){
-    let poruka = {
-       vrednost: trenutnaTemperatura,
-       vremeRada: timerRada
-    };
+    if(trenutnaTemperatura > maxTemp)
+    maxTemp = trenutnaTemperatura;
+    if(trenutnaTemperatura<minTemp)
+    minTemp = trenutnaTemperatura;
+      let poruka = {
+         Temp: trenutnaTemperatura,
+         VremeRada: timerRada,
+          MinTemp:minTemp,
+          MaxValue:maxTemp,
+          Potrosnja:timerRada*51
+      };
+    console.log("aktivan " + aktivan);
     console.log(poruka);
      axios
-     .post('http://[::1]:3000/dans/klima', poruka)
+     .put('http://[::1]:3000/klimas/1', poruka)
      .then(res => {
      })
      .catch(error => {

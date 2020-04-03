@@ -1,0 +1,6 @@
+{
+  "name": "Sijalica",
+  "connector": "memory",
+  "localStorage": "",
+  "file": "./data/sijalica.json"
+}

@@ -38,11 +38,14 @@ let ukljucen = false;//da li radi ili ne;
 let aktivan = false;//da li regulise vlagu ili ne;
 let ciljnaVlaznost = -999;
 let timerRada = 0;
+let minVlaz = 50;
+let maxVlaz = 50;
 
-const timer = rxjs.interval(1000);
+const timer = rxjs.interval(2000);
 timer.subscribe(()=>{
     console.log(timerRada);
     promeniVlaznost();
+    daLiTrebaDaAktivna();
     if(aktivan)
     timerRada+=3;
     posaljiPodatke();
@@ -53,7 +56,8 @@ function promeniVlaznost(){
         trenutnaVlaznost++;
     else
         trenutnaVlaznost--;
-    raste = Math.random()<0.1 ? !raste:raste;
+    if(aktivan == false)
+        raste = Math.random()<0.1 ? !raste:raste;
 }
 
 function odrediTrend(novaCiljnaVlaznost){
@@ -69,27 +73,46 @@ function upaliVlaznost(){
 }
 
 function ugasiVlaznost(){
-    ukljucen = true;
+    ukljucen = false;
     aktivan = false;
 }
 
 function daLiTrebaDaAktivna(){
-    if((ciljnaVlaznost > trenutnaVlaznost + trenutnaVlaznost*0.05) || (ciljnaVlaznost < 0.95*trenutnaVlaznost)){
-        aktivan = true;
-        odrediTrend();
+    if(ukljucen == true){
+        if(aktivan == false){
+            console.log("Ciljna" + ciljnaVlaznost)
+         if (trenutnaVlaznost > (ciljnaVlaznost - -1*3)){
+            console.log("Aktiviram Susenje!")
+            aktivan = true;
+            raste = false;
+        }
+        else if (trenutnaVlaznost < (ciljnaVlaznost - 3)){
+            console.log("Aktiviram Vlazenje!")
+            aktivan = true;
+            raste = true;
+        }
     }
-    else 
-        aktivan = false;
+        else if((trenutnaVlaznost > (ciljnaVlaznost - 1)) && (trenutnaVlaznost  < (ciljnaVlaznost - -1*1)) && aktivan == true){
+            console.log("DeAktiviram Osvezavac!");
+            aktivan = false;
+        }
+    }
 }
 
 function posaljiPodatke(){
+    if(trenutnaVlaznost > maxVlaz)
+  maxVlaz = trenutnaVlaznost;
+  if(trenutnaVlaznost<minVlaz)
+  minVlaz = trenutnaVlaznost;
     let poruka = {
-       vrednost: trenutnaVlaznost,
-       vremeRada: timerRada
-    };
+        Vlaz: trenutnaVlaznost,
+        VremeRada: timerRada,
+         MinVlaz:minVlaz,
+         MaxVlaz:maxVlaz,
+     };
     console.log(poruka);
      axios
-     .post('http://[::1]:3000/dans/vlaznost', poruka)
+     .put('http://[::1]:3000/osvezavacs/1', poruka)
      .then(res => {
      })
      .catch(error => {

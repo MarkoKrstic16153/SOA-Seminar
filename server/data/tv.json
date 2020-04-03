@@ -1,0 +1,14 @@
+{
+  "ids": {
+    "Tv": 6
+  },
+  "models": {
+    "Tv": {
+      "1": "{\"id\":\"1\",\"Potrosnja\":72,\"VremeRada\":24}",
+      "2": "{\"Potrosnja\":0,\"VremeRada\":0,\"id\":\"2\"}",
+      "3": "{\"Potrosnja\":0,\"VremeRada\":0,\"id\":\"3\"}",
+      "4": "{\"Potrosnja\":0,\"VremeRada\":0,\"id\":\"4\"}",
+      "5": "{\"Potrosnja\":0,\"VremeRada\":0,\"id\":\"5\"}"
+    }
+  }
+}

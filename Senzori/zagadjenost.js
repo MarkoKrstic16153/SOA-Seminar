@@ -30,25 +30,32 @@ app.listen(port, () => {
     res.send("Ugasen " + senzor);
   });
 
-  let trenutnaZagadjenost = Math.random()*300;//pocetna zagadjenost je izmedju 0 i 300 cestica;
-  let raste = Math.random()>0.5 ? true:false;
+  let trenutnaZagadjenost = 50 + Math.random()*300;//pocetna zagadjenost je izmedju 0 i 300 cestica;
+  let raste = Math.random()>0.5 ? 1:-1;
   let ukljucen = false;// da li je korisnik upalio preciscavac
   let aktivan = false;//da li cisti ili ne;
   let dozvoljenaZagadjenost = 75;
   let timerRada = 0;
-
+  let minZag = 100;
+  let maxZag = 150;
   const timer = rxjs.interval(1000);
   timer.subscribe(()=>{
     console.log(timerRada);
     promeniZagadjenost();
+    daLiTrebaDaCisti();
     if(aktivan)
     timerRada+=3;
     posaljiPodatke();
 });
 
   function promeniZagadjenost(){
+    if(aktivan == false){
       trenutnaZagadjenost += 0.02*trenutnaZagadjenost*raste;
       raste = Math.random()<0.1 ? -1*raste:raste;
+    }
+    else{
+      trenutnaZagadjenost -= 0.02*trenutnaZagadjenost;
+    }
 }
 
 function upaliPreciscavac(){
@@ -62,20 +69,28 @@ function ugasiPreciscavac(){
 }
 
 function daLiTrebaDaCisti(){
-    if(dozvoljenaZagadjenost < trenutnaZagadjenost*1.02)
+  if(ukljucen){
+    if(dozvoljenaZagadjenost < trenutnaZagadjenost*1.05)
         aktivan = true;
     else 
         aktivan = false;
+  }
 }
 
 function posaljiPodatke(){
+  if(trenutnaZagadjenost > maxZag)
+  maxZag = trenutnaZagadjenost;
+  if(trenutnaZagadjenost<minZag)
+  minZag = trenutnaZagadjenost;
     let poruka = {
-       vrednost: trenutnaTemperatura,
-       vremeRada: timerRada
+       Zag: trenutnaZagadjenost,
+       VremeRada: timerRada,
+        MinZag:minZag,
+        MaxZag:maxZag,
     };
     console.log(poruka);
      axios
-     .post('http://[::1]:3000/dans/zagadjenost', poruka)
+     .put('http://[::1]:3000/preciscavacs/1', poruka)
      .then(res => {
      })
      .catch(error => {

@@ -88,12 +88,13 @@ function daLiTrebaDaGreje(){
 
 function posaljiPodatke(){
    let poruka = {
-    vrednost: trenutnaTemperatura,
-      vremeRada: timerRada
+    Voda: trenutnaTemperatura,
+      VremeRada: timerRada,
+      Potrosnja: timerRada*56 
    };
    console.log(poruka);
     axios
-    .post('http://[::1]:3000/dans/boiler', poruka)
+    .put('http://[::1]:3000/boilers/1', poruka)
     .then(res => {
     })
     .catch(error => {

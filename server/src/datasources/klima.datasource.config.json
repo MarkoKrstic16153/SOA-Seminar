@@ -1,0 +1,6 @@
+{
+  "name": "Klima",
+  "connector": "memory",
+  "localStorage": "",
+  "file": "./data/klima.json"
+}

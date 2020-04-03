@@ -1,0 +1,6 @@
+{
+  "name": "Tv",
+  "connector": "memory",
+  "localStorage": "",
+  "file": "./data/tv.json"
+}

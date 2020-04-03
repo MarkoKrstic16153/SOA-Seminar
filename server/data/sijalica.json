@@ -1,0 +1,12 @@
+{
+  "ids": {
+    "Sijalica": 4
+  },
+  "models": {
+    "Sijalica": {
+      "1": "{\"id\":\"1\",\"VremeRada\":24,\"Potrosnja\":240}",
+      "2": "{\"VremeRada\":0,\"Potrosnja\":0,\"id\":\"2\"}",
+      "3": "{\"VremeRada\":0,\"Potrosnja\":0,\"id\":\"3\"}"
+    }
+  }
+}

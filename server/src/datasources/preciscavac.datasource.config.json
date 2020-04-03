@@ -1,0 +1,6 @@
+{
+  "name": "Preciscavac",
+  "connector": "memory",
+  "localStorage": "",
+  "file": "./data/preciscavac.json"
+}
