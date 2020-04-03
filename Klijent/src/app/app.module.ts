@@ -15,6 +15,8 @@ import { OsvezavacComponent } from './components/osvezavac/osvezavac.component';
 import { PotrosnjaComponent } from './components/potrosnja/potrosnja.component';
 import { HomeComponent } from './components/home/home.component';
 
+import { ChartsModule } from "ng2-charts";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +36,8 @@ import { HomeComponent } from './components/home/home.component';
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

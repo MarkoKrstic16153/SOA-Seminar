@@ -177,10 +177,10 @@ export class KlimaController {
       },
     },
   })
-  ukljuciKlimu(@param.path.number('temp') temp: number): String {
+  ukljuciKlimu(@param.path.number('temp') temp: number) {
     console.log(temp);
     this.axios.get('http://localhost:3001/upali/' + temp);
-    return 'Klima Ukljucena';
+    //return 'Klima Ukljucena';
   }
 
   @get('/klimas/ugasi', {
@@ -191,8 +191,8 @@ export class KlimaController {
       },
     },
   })
-  ugasiBoiler(): String {
+  ugasiBoiler() {
     this.axios.get('http://localhost:3001/ugasi/');
-    return 'Klima Ugasena';
+    //return 'Klima Ugasena';
   }
 }
