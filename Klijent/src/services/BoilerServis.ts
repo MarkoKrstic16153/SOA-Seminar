@@ -3,9 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, interval } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
-export class KlimaService {
-    urlKlima:string = "http://localhost:3000/klimas/"
-    public klimaTemp:any = [];
+export class BoilerService {
+    urlBoiler:string = "http://localhost:3000/boilers/"
+    public boilerTemp:any = [];
     public temp:any[] = [];
     constructor(private httpClient: HttpClient) {
         interval(3000).subscribe(()=>{
@@ -14,25 +14,25 @@ export class KlimaService {
      }
     
      getTemp(){
-        this.httpClient.get(this.urlKlima+"1").subscribe((data:any)=>{
-            this.klimaTemp = data;
-            this.temp.push(data.Temp);
+        this.httpClient.get(this.urlBoiler+"1").subscribe((data:any)=>{
+            this.boilerTemp = data;
+            this.temp.push(data.Voda);
             if(this.temp.length>10){
                 this.temp.splice(0,1);
             }
         });
      }
 
-     ukljuciKlimu(temp:number){
-        this.httpClient.get(this.urlKlima+"ukljuci/"+temp)
+     ukljuciBoiler(temp:number){
+        this.httpClient.get(this.urlBoiler+"ukljuci/"+temp)
         .subscribe(()=>{
-            console.log('Klima Ukljucena');
+            console.log('Boiler Ukljucen');
         })
      }
 
-     ugasiKlimu(){
-        this.httpClient.get(this.urlKlima+"ugasi").subscribe(()=>{
-            console.log('Klima Ugasena');
+     ugasiBoiler(){
+        this.httpClient.get(this.urlBoiler+"ugasi").subscribe(()=>{
+            console.log('Boiler Ugasen');
         })
      }
 }

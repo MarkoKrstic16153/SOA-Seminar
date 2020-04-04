@@ -1,1 +1,11 @@
-<p>sijalice works!</p>
+<div>
+    <ul *ngFor="let si of sijalice;let i = index">
+        <li> Sijalica {{i + 1}} : <button *ngIf="sijalice[i]==false" (click)="upaliSijalicu(i)">Upali</button> <button *ngIf="sijalice[i]==true" (click)="ugasiSijalicu(i)">Ugasi</button></li>
+    </ul>
+</div>
+
+<div>Ukupno Potrosena Energija : {{sijalicaService.sijalicaData.Potrosnja}}J.</div>
+<div>Vreme Rada : {{sijalicaService.sijalicaData.VremeRada}}.</div>
+<div>
+   Upaljeno je {{brojUpaljenih}} sijalica.
+</div>

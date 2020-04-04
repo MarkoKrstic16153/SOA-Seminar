@@ -1,1 +1,27 @@
-<p>preciscavac works!</p>
+<div>   
+    <div class="form-group container">
+        <button (click)="ukljuci()">Ukljuci Preciscavac</button>
+        </div>
+        <div>
+    <button (click)="ugasi()">Ugasi Preciscavac</button>
+    </div>
+    <div>
+        <div style="display: block">
+          Zagadjenost Graf
+          <canvas
+            baseChart
+            [chartType]="chartType"
+            [datasets]="chartDatasets"
+            [labels]="chartLabels"
+            [colors]="chartColors"
+            [options]="chartOptions"
+            [legend]="true"
+          >
+          </canvas>
+        </div>
+    </div>
+
+    <div>Max Zagadjenost : {{preciscavacService.preciscavacData.MaxZag}}C, Min Zagadjenost : {{preciscavacService.preciscavacData.MinZag}}C.</div>
+    <div>Vreme Rada : {{preciscavacService.preciscavacData.VremeRada}}.</div>
+</div>
+

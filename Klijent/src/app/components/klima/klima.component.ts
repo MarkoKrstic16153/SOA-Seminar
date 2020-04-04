@@ -14,6 +14,8 @@ export class KlimaComponent implements OnInit {
   chartDatasets: Array<any> = [];
   chartLabels: Array<any> = [];
   chartType: string = 'line';
+
+  
   public chartColors: Array<any> = [
     {
       backgroundColor: 'rgba(105, 0, 132, .2)',
@@ -30,8 +32,9 @@ export class KlimaComponent implements OnInit {
 
   ngOnInit() {
     interval(3000).subscribe(()=>{
+      let niz : any[] = this.klimaService.temp;
       this.chartDatasets = [
-        { data: this.klimaService.temp, label: 'Temperatura Sobe' },
+        { data:niz, label: 'Temperatura Sobe' },
       ];
       this.chartLabels = [];
       for(let i=0;i<this.klimaService.temp.length;i++)

@@ -154,9 +154,8 @@ export class TvController {
       },
     },
   })
-  ukljuciTv(): String {
+  ukljuciTv() {
     this.axios.get('http://localhost:3011/upali');
-    return 'Tv Ukljucen';
   }
 
   @get('/tvs/ugasitv', {
@@ -167,9 +166,7 @@ export class TvController {
       },
     },
   })
-  ugasiTv(): String {
+  ugasiTv() {
     this.axios.get('http://localhost:3011/ugasi/');
-
-    return 'Tv Ugasen';
   }
 }

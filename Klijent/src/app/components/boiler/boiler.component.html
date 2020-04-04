@@ -1,1 +1,33 @@
-<p>boiler works!</p>
+<div>   
+    <div class="form-group container">
+        <label for="tempControl">Zeljena Temperatura :</label>
+        <input
+          type="number"
+          name="tempControl"
+          class="form-control"
+          [formControl]="tempControl"
+        />
+        <button (click)="ukljuci()">Ukljuci Boiler</button>
+        </div>
+        <div>
+    <button (click)="ugasi()">Ugasi Boiler</button>
+    </div>
+    <div>
+        <div style="display: block">
+          Temperatura Vode 
+          <canvas
+            baseChart
+            [chartType]="chartType"
+            [datasets]="chartDatasets"
+            [labels]="chartLabels"
+            [colors]="chartColors"
+            [options]="chartOptions"
+            [legend]="true"
+          >
+          </canvas>
+        </div>
+    </div>
+
+    <div>Ukupno Potrosena Energija : {{boilerService.boilerTemp.Potrosnja}}J.</div>
+    <div>Vreme Rada : {{boilerService.boilerTemp.VremeRada}}.</div>
+</div>

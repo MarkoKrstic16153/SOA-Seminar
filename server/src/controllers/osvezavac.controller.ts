@@ -181,10 +181,9 @@ export class OsvezavacController {
       },
     },
   })
-  ukljuciOsvezavac(@param.path.number('temp') temp: number): String {
+  ukljuciOsvezavac(@param.path.number('temp') temp: number) {
     console.log(temp);
     this.axios.get('http://localhost:3002/upali/' + temp);
-    return 'Osvezavacs Ukljucena';
   }
 
   @get('/osvezavacs/ugasi', {
@@ -195,9 +194,7 @@ export class OsvezavacController {
       },
     },
   })
-  ugasiTv(): String {
+  ugasiTv() {
     this.axios.get('http://localhost:3002/ugasi/');
-
-    return 'Osvezavac Ugasen';
   }
 }

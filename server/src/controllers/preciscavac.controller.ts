@@ -181,9 +181,8 @@ export class PreciscavacController {
       },
     },
   })
-  ukljuciTv(): String {
+  ukljuciTv() {
     this.axios.get('http://localhost:3003/upali');
-    return 'Preciscavac Ukljucen';
   }
 
   @get('/preciscavacs/ugasi', {
@@ -194,9 +193,7 @@ export class PreciscavacController {
       },
     },
   })
-  ugasiTv(): String {
+  ugasiTv() {
     this.axios.get('http://localhost:3003/ugasi/');
-
-    return 'Preciscavac Ugasen';
   }
 }

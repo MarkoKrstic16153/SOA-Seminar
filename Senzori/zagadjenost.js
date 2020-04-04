@@ -38,7 +38,7 @@ app.listen(port, () => {
   let timerRada = 0;
   let minZag = 100;
   let maxZag = 150;
-  const timer = rxjs.interval(1000);
+  const timer = rxjs.interval(3000);
   timer.subscribe(()=>{
     console.log(timerRada);
     promeniZagadjenost();

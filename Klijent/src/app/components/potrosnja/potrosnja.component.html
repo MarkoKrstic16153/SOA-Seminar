@@ -1,1 +1,15 @@
-<p>potrosnja works!</p>
+<div style="display: block">
+    Potrosnja Graf
+    <canvas
+      baseChart
+      [chartType]="chartType"
+      [datasets]="chartDatasets"
+      [labels]="chartLabels"
+      [colors]="chartColors"
+      [options]="chartOptions"
+      [legend]="true"
+    >
+    </canvas>
+  </div>
+
+<div>Ukupno je Potroseno : {{suma}}J.</div>

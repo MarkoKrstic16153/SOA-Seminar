@@ -179,9 +179,8 @@ export class SijalicaController {
       },
     },
   })
-  ukljuciTv(): String {
+  ukljuciTv() {
     this.axios.get('http://localhost:3016/upali');
-    return 'SIjalica Ukljucen';
   }
 
   @get('/sijalicas/ugasi', {
@@ -192,9 +191,7 @@ export class SijalicaController {
       },
     },
   })
-  ugasiTv(): String {
+  ugasiTv() {
     this.axios.get('http://localhost:3016/ugasi/');
-
-    return 'sijalica Ugasen';
   }
 }

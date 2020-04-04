@@ -177,10 +177,9 @@ export class BoilerController {
       },
     },
   })
-  ukljuciBoiler(@param.path.number('temp') temp: number): String {
+  ukljuciBoiler(@param.path.number('temp') temp: number) {
     console.log(temp);
     this.axios.get('http://localhost:3004/upali/' + temp);
-    return 'Boiler Ukljucen';
   }
 
   @get('/boilers/ugasi', {
@@ -191,9 +190,7 @@ export class BoilerController {
       },
     },
   })
-  ugasiBoiler(): String {
+  ugasiBoiler() {
     this.axios.get('http://localhost:3004/ugasi/');
-
-    return 'Boiler Ugasen';
   }
 }

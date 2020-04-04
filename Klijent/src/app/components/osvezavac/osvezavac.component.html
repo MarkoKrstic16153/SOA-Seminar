@@ -1,1 +1,34 @@
-<p>osvezavac works!</p>
+<div>   
+    <div class="form-group container">
+        <label for="tempControl">Zeljena Vlaznost :</label>
+        <input
+          type="number"
+          name="tempControl"
+          class="form-control"
+          [formControl]="tempControl"
+        />
+        <button (click)="ukljuci()">Ukljuci Osvezavac</button>
+        </div>
+        <div>
+    <button (click)="ugasi()">Ugasi Osvezavac</button>
+    </div>
+    <div>
+        <div style="display: block">
+          Vlaznost Graf
+          <canvas
+            baseChart
+            [chartType]="chartType"
+            [datasets]="chartDatasets"
+            [labels]="chartLabels"
+            [colors]="chartColors"
+            [options]="chartOptions"
+            [legend]="true"
+          >
+          </canvas>
+        </div>
+    </div>
+
+    <div>Max Vlaznost : {{vlaznostService.osvezavacData.MaxVlaz}}%, Min Vlaznost : {{vlaznostService.osvezavacData.MinVlaz}}%.</div>
+    <div>Vreme Rada : {{vlaznostService.osvezavacData.VremeRada}}.</div>
+</div>
+

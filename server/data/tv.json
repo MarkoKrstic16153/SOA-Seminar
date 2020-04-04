@@ -4,7 +4,7 @@
   },
   "models": {
     "Tv": {
-      "1": "{\"id\":\"1\",\"Potrosnja\":72,\"VremeRada\":24}",
+      "1": "{\"id\":\"1\",\"Potrosnja\":27,\"VremeRada\":9}",
       "2": "{\"Potrosnja\":0,\"VremeRada\":0,\"id\":\"2\"}",
       "3": "{\"Potrosnja\":0,\"VremeRada\":0,\"id\":\"3\"}",
       "4": "{\"Potrosnja\":0,\"VremeRada\":0,\"id\":\"4\"}",

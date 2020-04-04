@@ -14,7 +14,7 @@
     </div>
     <div>
         <div style="display: block">
-          Tezina Graf
+          Temperatura Graf
           <canvas
             baseChart
             [chartType]="chartType"
@@ -29,4 +29,6 @@
     </div>
 
     <div>Max Temperatura : {{klimaService.klimaTemp.MaxValue}}C, Min Temperatura : {{klimaService.klimaTemp.MinTemp}}C.</div>
+    <div>Ukupno Potrosena Energija : {{klimaService.klimaTemp.Potrosnja}}J.</div>
+    <div>Vreme Rada : {{klimaService.klimaTemp.VremeRada}}.</div>
 </div>
