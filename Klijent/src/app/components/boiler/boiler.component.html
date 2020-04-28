@@ -7,14 +7,13 @@
           class="form-control"
           [formControl]="tempControl"
         />
-        <button (click)="ukljuci()">Ukljuci Boiler</button>
+        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Boiler</button>
         </div>
         <div>
-    <button (click)="ugasi()">Ugasi Boiler</button>
+    <button (click)="ugasi()" class="btn btn-danger">Ugasi Boiler</button>
     </div>
     <div>
         <div style="display: block">
-          Temperatura Vode 
           <canvas
             baseChart
             [chartType]="chartType"

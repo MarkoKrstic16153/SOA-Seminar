@@ -1,13 +1,13 @@
 <div>   
     <div class="form-group container">
-        <button (click)="ukljuci()">Ukljuci Preciscavac</button>
+        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Preciscavac</button>
         </div>
         <div>
-    <button (click)="ugasi()">Ugasi Preciscavac</button>
+    <button (click)="ugasi()" class="btn btn-danger">Ugasi Preciscavac</button>
     </div>
     <div>
         <div style="display: block">
-          Zagadjenost Graf
+
           <canvas
             baseChart
             [chartType]="chartType"

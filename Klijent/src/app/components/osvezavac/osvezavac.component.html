@@ -7,14 +7,13 @@
           class="form-control"
           [formControl]="tempControl"
         />
-        <button (click)="ukljuci()">Ukljuci Osvezavac</button>
+        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Osvezavac</button>
         </div>
         <div>
-    <button (click)="ugasi()">Ugasi Osvezavac</button>
+    <button (click)="ugasi()" class="btn btn-danger">Ugasi Osvezavac</button>
     </div>
     <div>
         <div style="display: block">
-          Vlaznost Graf
           <canvas
             baseChart
             [chartType]="chartType"

@@ -1,6 +1,6 @@
 <div>
     <ul *ngFor="let si of sijalice;let i = index">
-        <li> Sijalica {{i + 1}} : <button *ngIf="sijalice[i]==false" (click)="upaliSijalicu(i)">Upali</button> <button *ngIf="sijalice[i]==true" (click)="ugasiSijalicu(i)">Ugasi</button></li>
+        <li> Sijalica {{i + 1}} : <button *ngIf="sijalice[i]==false" (click)="upaliSijalicu(i)" class="btn btn-success">Upali</button> <button *ngIf="sijalice[i]==true" (click)="ugasiSijalicu(i)" class="btn btn-danger">Ugasi</button></li>
     </ul>
 </div>
 

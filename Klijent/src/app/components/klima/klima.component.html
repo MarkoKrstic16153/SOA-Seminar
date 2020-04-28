@@ -7,14 +7,13 @@
           class="form-control"
           [formControl]="tempControl"
         />
-        <button (click)="ukljuci()">Ukljuci Klimu</button>
+        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Klimu</button>
         </div>
         <div>
-    <button (click)="ugasi()">Ugasi Klimu</button>
+    <button (click)="ugasi()" class="btn btn-danger">Ugasi Klimu</button>
     </div>
     <div>
         <div style="display: block">
-          Temperatura Graf
           <canvas
             baseChart
             [chartType]="chartType"
