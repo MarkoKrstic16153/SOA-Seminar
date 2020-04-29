@@ -1,27 +1,36 @@
-<div>   
+<div class="container shadow p-3">
+  <div class="border p-3 rounded">
     <div class="form-group container">
-        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Preciscavac</button>
-        </div>
-        <div>
-    <button (click)="ugasi()" class="btn btn-danger">Ugasi Preciscavac</button>
+      <button (click)="ukljuci()" class="btn btn-success mt-2">
+        Ukljuci Preciscavac
+      </button>
     </div>
-    <div>
-        <div style="display: block">
-
-          <canvas
-            baseChart
-            [chartType]="chartType"
-            [datasets]="chartDatasets"
-            [labels]="chartLabels"
-            [colors]="chartColors"
-            [options]="chartOptions"
-            [legend]="true"
-          >
-          </canvas>
-        </div>
+    <div class="m-1 ml-3">
+      <button (click)="ugasi()" class="btn btn-danger">
+        Ugasi Preciscavac
+      </button>
+    </div>
+    <div class="p-2">
+      <div style="display: block;">
+        <canvas
+          baseChart
+          [chartType]="chartType"
+          [datasets]="chartDatasets"
+          [labels]="chartLabels"
+          [colors]="chartColors"
+          [options]="chartOptions"
+          [legend]="true"
+        >
+        </canvas>
+      </div>
     </div>
 
-    <div>Max Zagadjenost : {{preciscavacService.preciscavacData.MaxZag}}C, Min Zagadjenost : {{preciscavacService.preciscavacData.MinZag}}C.</div>
-    <div>Vreme Rada : {{preciscavacService.preciscavacData.VremeRada}}.</div>
+    <div class="m-3">
+      Max Zagadjenost : {{ preciscavacService.preciscavacData.MaxZag }}C, Min
+      Zagadjenost : {{ preciscavacService.preciscavacData.MinZag }}C.
+    </div>
+    <div class="m-3">
+      Vreme Rada : {{ preciscavacService.preciscavacData.VremeRada }}.
+    </div>
+  </div>
 </div>
-

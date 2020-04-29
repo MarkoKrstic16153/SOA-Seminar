@@ -1,15 +1,17 @@
-<div style="display: block">
-
-    <canvas
-      baseChart
-      [chartType]="chartType"
-      [datasets]="chartDatasets"
-      [labels]="chartLabels"
-      [colors]="chartColors"
-      [options]="chartOptions"
-      [legend]="true"
-    >
-    </canvas>
+<div class="container shadow p-3">
+  <div class="rounded border p-3">
+    <div style="display: block;">
+      <canvas
+        baseChart
+        [chartType]="chartType"
+        [datasets]="chartDatasets"
+        [labels]="chartLabels"
+        [colors]="chartColors"
+        [options]="chartOptions"
+        [legend]="true"
+      >
+      </canvas>
+    </div>
   </div>
-
-<div>Ukupno je Potroseno : {{suma}}J.</div>
+  <div class="p-2">Ukupno je Potroseno : {{ suma }}J.</div>
+</div>

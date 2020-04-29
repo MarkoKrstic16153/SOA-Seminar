@@ -1,11 +1,30 @@
-<div>
-    <ul *ngFor="let si of sijalice;let i = index">
-        <li> Sijalica {{i + 1}} : <button *ngIf="sijalice[i]==false" (click)="upaliSijalicu(i)" class="btn btn-success">Upali</button> <button *ngIf="sijalice[i]==true" (click)="ugasiSijalicu(i)" class="btn btn-danger">Ugasi</button></li>
+<div class="container shadow p-3">
+  <div>
+    <ul *ngFor="let si of sijalice; let i = index">
+      <div class="border rounded p-2 shadow">
+        Sijalica {{ i + 1 }} :
+        <button
+          *ngIf="sijalice[i] == false"
+          (click)="upaliSijalicu(i)"
+          class="btn btn-success"
+        >
+          Upali
+        </button>
+        <button
+          *ngIf="sijalice[i] == true"
+          (click)="ugasiSijalicu(i)"
+          class="btn btn-danger"
+        >
+          Ugasi
+        </button>
+      </div>
     </ul>
-</div>
-
-<div>Ukupno Potrosena Energija : {{sijalicaService.sijalicaData.Potrosnja}}J.</div>
-<div>Vreme Rada : {{sijalicaService.sijalicaData.VremeRada}}.</div>
-<div>
-   Upaljeno je {{brojUpaljenih}} sijalica.
+  </div>
+  <div class="border rounded p-2 shadow">
+    <div>
+      Ukupno Potrosena Energija : {{ sijalicaService.sijalicaData.Potrosnja }}J.
+    </div>
+    <div>Vreme Rada : {{ sijalicaService.sijalicaData.VremeRada }}.</div>
+    <div>Upaljeno je {{ brojUpaljenih }} sijalica.</div>
+  </div>
 </div>

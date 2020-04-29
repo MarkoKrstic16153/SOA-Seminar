@@ -1,32 +1,40 @@
-<div>   
+<div class="container shadow p-3">
+  <div class="border p-3 rounded">
     <div class="form-group container">
-        <label for="tempControl">Zeljena Temperatura :</label>
-        <input
-          type="number"
-          name="tempControl"
-          class="form-control"
-          [formControl]="tempControl"
-        />
-        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Boiler</button>
-        </div>
-        <div>
-    <button (click)="ugasi()" class="btn btn-danger">Ugasi Boiler</button>
+      <label for="tempControl">Zeljena Temperatura :</label>
+      <input
+        type="number"
+        name="tempControl"
+        class="form-control"
+        [formControl]="tempControl"
+      />
+      <button (click)="ukljuci()" class="btn btn-success mt-2">
+        Ukljuci Boiler
+      </button>
     </div>
-    <div>
-        <div style="display: block">
-          <canvas
-            baseChart
-            [chartType]="chartType"
-            [datasets]="chartDatasets"
-            [labels]="chartLabels"
-            [colors]="chartColors"
-            [options]="chartOptions"
-            [legend]="true"
-          >
-          </canvas>
-        </div>
+    <div class="m-1 ml-3">
+      <button (click)="ugasi()" class="btn btn-danger">Ugasi Boiler</button>
+    </div>
+    <div class="p-2">
+      <div style="display: block;">
+        <canvas
+          baseChart
+          [chartType]="chartType"
+          [datasets]="chartDatasets"
+          [labels]="chartLabels"
+          [colors]="chartColors"
+          [options]="chartOptions"
+          [legend]="true"
+        >
+        </canvas>
+      </div>
     </div>
 
-    <div>Ukupno Potrosena Energija : {{boilerService.boilerTemp.Potrosnja}}J.</div>
-    <div>Vreme Rada : {{boilerService.boilerTemp.VremeRada}}.</div>
+    <div class="m-3">
+      Ukupno Potrosena Energija : {{ boilerService.boilerTemp.Potrosnja }}J.
+    </div>
+    <div class="m-3">
+      Vreme Rada : {{ boilerService.boilerTemp.VremeRada }}.
+    </div>
+  </div>
 </div>

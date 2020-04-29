@@ -1,33 +1,42 @@
-<div>   
+<div class="container shadow p-3">
+  <div class="border p-3 rounded">
     <div class="form-group container">
-        <label for="tempControl">Zeljena Temperatura :</label>
-        <input
-          type="number"
-          name="tempControl"
-          class="form-control"
-          [formControl]="tempControl"
-        />
-        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Klimu</button>
-        </div>
-        <div>
-    <button (click)="ugasi()" class="btn btn-danger">Ugasi Klimu</button>
+      <label for="tempControl">Zeljena Temperatura :</label>
+      <input
+        type="number"
+        name="tempControl"
+        class="form-control"
+        [formControl]="tempControl"
+      />
+      <button (click)="ukljuci()" class="btn btn-success mt-2">
+        Ukljuci Klimu
+      </button>
     </div>
-    <div>
-        <div style="display: block">
-          <canvas
-            baseChart
-            [chartType]="chartType"
-            [datasets]="chartDatasets"
-            [labels]="chartLabels"
-            [colors]="chartColors"
-            [options]="chartOptions"
-            [legend]="true"
-          >
-          </canvas>
-        </div>
+    <div class="m-1 ml-3">
+      <button (click)="ugasi()" class="btn btn-danger">Ugasi Klimu</button>
+    </div>
+    <div class="p-2">
+      <div style="display: block;">
+        <canvas
+          baseChart
+          [chartType]="chartType"
+          [datasets]="chartDatasets"
+          [labels]="chartLabels"
+          [colors]="chartColors"
+          [options]="chartOptions"
+          [legend]="true"
+        >
+        </canvas>
+      </div>
     </div>
 
-    <div>Max Temperatura : {{klimaService.klimaTemp.MaxValue}}C, Min Temperatura : {{klimaService.klimaTemp.MinTemp}}C.</div>
-    <div>Ukupno Potrosena Energija : {{klimaService.klimaTemp.Potrosnja}}J.</div>
-    <div>Vreme Rada : {{klimaService.klimaTemp.VremeRada}}.</div>
+    <div class="m-3">
+      Max Temperatura : {{ klimaService.klimaTemp.MaxValue }}C, Min Temperatura
+      : {{ klimaService.klimaTemp.MinTemp }}C.
+    </div>
+    <div class="m-3">
+      Ukupno Potrosena Energija : {{ klimaService.klimaTemp.Potrosnja }}J.
+    </div>
+    <div class="m-3">Vreme Rada : {{ klimaService.klimaTemp.VremeRada }}.</div>
+  </div>
 </div>
