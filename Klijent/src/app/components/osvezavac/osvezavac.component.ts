@@ -29,23 +29,55 @@ export class OsvezavacComponent implements OnInit {
 
   ngOnInit() {
     interval(3000).subscribe(()=>{
-      let niz : any[] = this.vlaznostService.temp;
+      let i;    
+      let niz : any[] = [];
+    for(i=0;i<this.vlaznostService.temp.length;i++){
+      niz.push(this.vlaznostService.temp[i]);
+    }
       this.chartDatasets = [
         { data: niz, label: 'Vlaznost Sobe' },
       ];
       this.chartLabels = [];
-      for(let i=0;i<this.vlaznostService.temp.length;i++)
+      for(let i=0;i<niz.length;i++)
           this.chartLabels.push(i+1);
-          //console.log( this.vlaznostService.temp);
     });
+    let i;    
+      let niz : any[] = [];
+    for(i=0;i<this.vlaznostService.temp.length;i++){
+      niz.push(this.vlaznostService.temp[i]);
+    }
+    this.chartDatasets = [
+      { data: niz, label: 'Vlaznost Sobe' },
+    ];
+    this.chartLabels = [];
+    for(let i=0;i<niz.length;i++)
+        this.chartLabels.push(i+1);
+    
   }
 
-  ukljuci(){
-    this.vlaznostService.ukljuciOsvezavac(this.tempControl.value);
+  stanje(){
+    if(this.vlaznostService.osvezavacData.stanjeUredjaja == true){
+      return "Ukljucen";
+    }
+    else {
+      return "Iskljucen";
+    }
+  }
+
+  ukljuci(){    
+    let onCommand : any = {
+      vrstaKomande : 1,
+      vrednostKomande : this.tempControl.value,
+    };
+    this.vlaznostService.issueCommand(onCommand);
   }
 
   ugasi(){
-    this.vlaznostService.ugasiOsvezavac();
+    let offCommand : any = {
+      vrstaKomande : 0,
+      vrednostKomande : 0
+    };
+    this.vlaznostService.issueCommand(offCommand);
   }
 
 }

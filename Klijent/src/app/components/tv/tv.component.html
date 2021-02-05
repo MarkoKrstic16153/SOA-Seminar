@@ -1,14 +1,46 @@
-<div class="container shadow p-3">
+<div *ngIf="tvService.tvData!=null" class="container shadow p-3">
+  <div class="form-group container">
+    <label for="tempControl">Novi Kanal :</label>
+      <input
+        type="text"
+        name="noviKanalControl"
+        class="form-control"
+        [formControl]="noviKanalControl"
+      />
+      <button (click)="dodajKanal()" class="btn btn-success mt-2">
+        Dodaj Kanal
+      </button>
+  </div>
+  <div>
+    <ul *ngFor="let kanal of tvService.tvData.kanali; let i = index">
+      <div class="border rounded p-2 shadow">
+        Kanal {{ i + 1 }} -> {{kanal}}
+        <button
+          *ngIf="tvService.tvData.stanjeUredjaja == true && tvService.getCurrentChannel() != i"
+          (click)="promeniKanal(i)"
+          class="btn btn-success"
+        >
+          Promeni Kanal
+        </button>
+      </div>
+    </ul>
+  </div>
   <div class="rounded border p-3 m-3">
     <div class="row p-1">
       <div class="m-1">
-        <button (click)="ukljuci()" class="btn btn-success">Ukljuci Tv</button>
+        <button *ngIf="tvService.tvData.stanjeUredjaja == false" (click)="ukljuci()" class="btn btn-success">Ukljuci Tv</button>
       </div>
       <div class="m-1">
-        <button (click)="ugasi()" class="btn btn-danger">Ugasi Tv</button>
+        <button *ngIf="tvService.tvData.stanjeUredjaja == true" (click)="ugasi()" class="btn btn-danger">Ugasi Tv</button>
       </div>
     </div>
-    <div>Ukupno Potrosena Energija : {{ tvService.tvData.Potrosnja }}J.</div>
-    <div>Vreme Rada : {{ tvService.tvData.VremeRada }}.</div>
+
+    <div class="m-3">
+      Stanje Uredjaja: {{ stanje()}}. Trenutni Kanal: {{ tvService.getCurrentChannelName()}}.       
+    </div>
+    <div class="m-3">
+      Vreme Rada Danas: {{ (tvService.tvData.potrosnjaUredjaja / 0.3).toFixed(1)}}.    Potrosena Energija Danas: {{ tvService.tvData.potrosnjaUredjaja.toFixed(1) }}J.
+    </div>
+    
   </div>
 </div>

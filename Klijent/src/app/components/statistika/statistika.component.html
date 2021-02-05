@@ -1,0 +1,62 @@
+<h1 class="m-3 p-4" style="font-size: 5vw;">Statistika Potrosnje</h1>
+<div class="p-2 mt-4">
+  <div class="pb-2 rounded">
+    <button class="btn-danger btn mt-2 ml-2" (click)="zavrsiDan()">
+        Zavrsi Merenje za Trenutni Dan
+    </button>
+   </div>
+
+   <div class="p-2">
+        <div *ngIf="statistikaServis.allDays.length > 0" style="display: block;">
+        <canvas
+            baseChart
+            [chartType]="barChartType"
+            [datasets]="barChartDatasets"
+            [labels]="barChartLabels"
+            [colors]="barChartColors"
+            [options]="barChartOptions"
+            [legend]="true"
+        >
+        </canvas>
+        </div>
+   </div>
+   <div class="p-2 mt-4" *ngIf="statistikaServis.allDays.length > 0">
+    Prosecna potrosnja po danu je: {{prosecnaPotrosnja().toFixed(1)}}J.
+   </div>
+   <div class="col-6">
+    <label for="tagselect">Detalji o Prethodnim Danima:</label>
+    <select
+    class="form-control"
+    id="tagselect"
+    (change)="onChangeSelect($event.target.value)" 
+    [(ngModel)]="selected">
+        <option 
+            *ngFor="let dan of statistikaServis.allDays; let i = index"
+            [value]="i">
+            Dan {{i + 1}}
+        </option>
+    </select>
+</div>
+
+
+<div class="rounded border p-3" *ngIf="selektovanDan == true">
+    <div style="display: block;">
+      <canvas
+        baseChart
+        [chartType]="pieChartType"
+        [datasets]="pieChartDatasets"
+        [labels]="pieChartLabels"
+        [colors]="pieChartColors"
+        [options]="pieChartOptions"
+        [legend]="true"
+      >
+      </canvas>
+    </div>
+    <div>
+        Ukupna Potrosnja u Danu {{selectedIndex + 1}} je {{statistikaServis.totalDays[selectedIndex].toFixed(1)}}J.
+    </div>
+  </div>
+
+
+
+</div>

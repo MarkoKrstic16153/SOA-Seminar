@@ -28,23 +28,55 @@ export class BoilerComponent implements OnInit {
   constructor(private boilerService : BoilerService) { }
 
   ngOnInit() {
-    interval(3000).subscribe(()=>{
-      let niz : any[] = this.boilerService.temp;
+    interval(3000).subscribe(()=>{ 
+      let i;    
+      let niz : any[] = [];
+      for(i=0;i<this.boilerService.temp.length;i++){
+        niz.push(this.boilerService.temp[i]);
+      }
       this.chartDatasets = [
-        { data: this.boilerService.temp, label: 'Temperatura Vode' },
+        { data: niz, label: 'Temperatura Vode' },
       ];
       this.chartLabels = [];
-      for(let i=0;i<this.boilerService.temp.length;i++)
+      for(let i=0;i<niz.length;i++)
           this.chartLabels.push(i+1);
     });
+    let i; 
+    let niz : any[] = [];
+    for(i=0;i<this.boilerService.temp.length;i++){
+      niz.push(this.boilerService.temp[i]);
+    }
+      this.chartDatasets = [
+        { data: niz, label: 'Temperatura Vode' },
+      ];
+      this.chartLabels = [];
+      for(let i=0;i<niz.length;i++)
+          this.chartLabels.push(i+1);
+  }
+
+  stanje(){
+    if(this.boilerService.boilerTemp.stanjeUredjaja == true){
+      return "Ukljucen";
+    }
+    else {
+      return "Iskljucen";
+    }
   }
 
   ukljuci(){
-    this.boilerService.ukljuciBoiler(this.tempControl.value);
+    let onCommand : any = {
+        vrstaKomande : 1,
+        vrednostKomande : this.tempControl.value,
+    };
+    this.boilerService.issueCommand(onCommand);
   }
 
   ugasi(){
-    this.boilerService.ugasiBoiler();
+    let offCommand : any = {
+      vrstaKomande : 0,
+      vrednostKomande : 0
+    };
+    this.boilerService.issueCommand(offCommand);
   }
 
 }

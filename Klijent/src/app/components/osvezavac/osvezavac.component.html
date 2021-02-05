@@ -16,7 +16,7 @@
       <button (click)="ugasi()" class="btn btn-danger">Ugasi Osvezavac</button>
     </div>
     <div class="p-2">
-      <div style="display: block;">
+      <div *ngIf="vlaznostService.temp.length > 0" style="display: block;">
         <canvas
           baseChart
           [chartType]="chartType"
@@ -31,11 +31,10 @@
     </div>
 
     <div class="m-3">
-      Max Vlaznost : {{ vlaznostService.osvezavacData.MaxVlaz }}%, Min Vlaznost
-      : {{ vlaznostService.osvezavacData.MinVlaz }}%.
+      Trenutna Vlaznost Sobe: {{ vlaznostService.osvezavacData.podatakVrednost.toFixed(1)}}%.       Potrosena Energija Danas: {{ vlaznostService.osvezavacData.potrosnjaUredjaja.toFixed(1) }}J.
     </div>
     <div class="m-3">
-      Vreme Rada : {{ vlaznostService.osvezavacData.VremeRada }}.
+      Vreme Rada Danas: {{ (vlaznostService.osvezavacData.potrosnjaUredjaja / 1.4).toFixed(1)}}.    Stanje Uredjaja: {{ stanje()}}.
     </div>
   </div>
 </div>

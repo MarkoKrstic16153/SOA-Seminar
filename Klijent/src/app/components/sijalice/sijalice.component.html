@@ -19,12 +19,16 @@
         </button>
       </div>
     </ul>
+    <div class="m-1 ml-3">
+      <button (click)="upaliSve()" class="btn btn-success">Upali Sve Sijalice</button>
+      <button (click)="ugasiSve()" class="btn btn-danger">Ugasi Sve Sijalice</button>
+    </div>
   </div>
   <div class="border rounded p-2 shadow">
     <div>
-      Ukupno Potrosena Energija : {{ sijalicaService.sijalicaData.Potrosnja }}J.
+      Ukupno Potrosena Energija : {{ (sijalicaService.sijalicaData.potrosnjaUredjaja).toFixed(1) }}J.
     </div>
-    <div>Vreme Rada : {{ sijalicaService.sijalicaData.VremeRada }}.</div>
-    <div>Upaljeno je {{ brojUpaljenih }} sijalica.</div>
+    <div>Zajednicko Vreme Rada Svih Sijalica: {{ (sijalicaService.sijalicaData.potrosnjaUredjaja / 0.1).toFixed(1) }}.</div>
+    <div>Trenutno je Upaljeno {{ brojUpaljenih }} od 6 sijalica.</div>
   </div>
 </div>

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0rz87t1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
+  <bpmn:process id="end-day-command" name="End Day Control" isExecutable="true">
+    <bpmn:startEvent id="Event_17c5cpc" name="End Day Command Generated&#10;&#10;&#10;">
+      <bpmn:outgoing>Flow_0mevyn1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="Event_1ofc9we" name="Command Received&#10;&#10;">
+      <bpmn:incoming>Flow_0mevyn1</bpmn:incoming>
+      <bpmn:outgoing>Flow_01d3t23</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0ti5vsx" messageRef="Message_173i023" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="Event_0mpv3co" name="End Day Command Executed">
+      <bpmn:incoming>Flow_1m4v4d7</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0mevyn1" sourceRef="Event_17c5cpc" targetRef="Event_1ofc9we" />
+    <bpmn:serviceTask id="Activity_069m6ii" name="Reset Klima Consumption">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="clear-klima" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_105819o</bpmn:incoming>
+      <bpmn:outgoing>Flow_1i2h6zs</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0bwx7ud" name="Save Data To Database">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="save-data" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_01d3t23</bpmn:incoming>
+      <bpmn:outgoing>Flow_1ovxklk</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_07xo0a6" name="Reset Boiler Consumption">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="clear-boiler" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1ovxklk</bpmn:incoming>
+      <bpmn:outgoing>Flow_105819o</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_15unoix" name="Reset LightBulbs Consumption">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="clear-lightbulbs" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0e8xhe8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1qc8wub</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0fqp4w9" name="Reset Pollution Consumption">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="clear-pollution" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_01l3h4u</bpmn:incoming>
+      <bpmn:outgoing>Flow_0e8xhe8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_06alko3" name="Reset Humidity Consumption">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="clear-humidity" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1i2h6zs</bpmn:incoming>
+      <bpmn:outgoing>Flow_01l3h4u</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_01d3t23" sourceRef="Event_1ofc9we" targetRef="Activity_0bwx7ud" />
+    <bpmn:sequenceFlow id="Flow_1ovxklk" sourceRef="Activity_0bwx7ud" targetRef="Activity_07xo0a6" />
+    <bpmn:sequenceFlow id="Flow_105819o" sourceRef="Activity_07xo0a6" targetRef="Activity_069m6ii" />
+    <bpmn:sequenceFlow id="Flow_1i2h6zs" sourceRef="Activity_069m6ii" targetRef="Activity_06alko3" />
+    <bpmn:sequenceFlow id="Flow_01l3h4u" sourceRef="Activity_06alko3" targetRef="Activity_0fqp4w9" />
+    <bpmn:sequenceFlow id="Flow_0e8xhe8" sourceRef="Activity_0fqp4w9" targetRef="Activity_15unoix" />
+    <bpmn:serviceTask id="Activity_0cc8xtg" name="Reset TV Consumption">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="clear-tv" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qc8wub</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m4v4d7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1qc8wub" sourceRef="Activity_15unoix" targetRef="Activity_0cc8xtg" />
+    <bpmn:sequenceFlow id="Flow_1m4v4d7" sourceRef="Activity_0cc8xtg" targetRef="Event_0mpv3co" />
+  </bpmn:process>
+  <bpmn:message id="Message_173i023" name="end-day-command-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=commandId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="end-day-command">
+      <bpmndi:BPMNEdge id="Flow_0mevyn1_di" bpmnElement="Flow_0mevyn1">
+        <di:waypoint x="198" y="120" />
+        <di:waypoint x="292" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01d3t23_di" bpmnElement="Flow_01d3t23">
+        <di:waypoint x="328" y="120" />
+        <di:waypoint x="410" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1ovxklk_di" bpmnElement="Flow_1ovxklk">
+        <di:waypoint x="510" y="120" />
+        <di:waypoint x="560" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_105819o_di" bpmnElement="Flow_105819o">
+        <di:waypoint x="660" y="120" />
+        <di:waypoint x="700" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1i2h6zs_di" bpmnElement="Flow_1i2h6zs">
+        <di:waypoint x="750" y="160" />
+        <di:waypoint x="750" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_01l3h4u_di" bpmnElement="Flow_01l3h4u">
+        <di:waypoint x="700" y="270" />
+        <di:waypoint x="660" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0e8xhe8_di" bpmnElement="Flow_0e8xhe8">
+        <di:waypoint x="560" y="270" />
+        <di:waypoint x="510" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qc8wub_di" bpmnElement="Flow_1qc8wub">
+        <di:waypoint x="410" y="270" />
+        <di:waypoint x="360" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m4v4d7_di" bpmnElement="Flow_1m4v4d7">
+        <di:waypoint x="260" y="270" />
+        <di:waypoint x="198" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Activity_0bwx7ud_di" bpmnElement="Activity_0bwx7ud">
+        <dc:Bounds x="410" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_07xo0a6_di" bpmnElement="Activity_07xo0a6">
+        <dc:Bounds x="560" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1u8oc3c_di" bpmnElement="Activity_069m6ii">
+        <dc:Bounds x="700" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0fqp4w9_di" bpmnElement="Activity_0fqp4w9">
+        <dc:Bounds x="560" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_06alko3_di" bpmnElement="Activity_06alko3">
+        <dc:Bounds x="700" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_15unoix_di" bpmnElement="Activity_15unoix">
+        <dc:Bounds x="410" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0cc8xtg_di" bpmnElement="Activity_0cc8xtg">
+        <dc:Bounds x="260" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ofc9we_di" bpmnElement="Event_1ofc9we">
+        <dc:Bounds x="292" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="285" y="145" width="51" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mpv3co_di" bpmnElement="Event_0mpv3co">
+        <dc:Bounds x="162" y="252" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="154" y="296" width="51" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17c5cpc_di" bpmnElement="Event_17c5cpc">
+        <dc:Bounds x="162" y="102" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="145" width="52" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

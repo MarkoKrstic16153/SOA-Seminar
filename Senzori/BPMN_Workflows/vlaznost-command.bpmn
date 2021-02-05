@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0rz87t1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
+  <bpmn:process id="humidity-command" name="Vlaznost Controls" isExecutable="true">
+    <bpmn:startEvent id="Event_17c5cpc" name="Humidity Command Generated&#10;&#10;&#10;">
+      <bpmn:outgoing>Flow_0mevyn1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="Event_1ofc9we" name="Command Received&#10;&#10;">
+      <bpmn:incoming>Flow_0mevyn1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bi03yp</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0ti5vsx" messageRef="Message_173i023" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="Gateway_1o9c3uh" name="Command Type?&#10;&#10;" default="Flow_100wi4u">
+      <bpmn:incoming>Flow_1bi03yp</bpmn:incoming>
+      <bpmn:outgoing>Flow_100wi4u</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0mrirdz</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_0mpv3co" name="Humidity Command Executed">
+      <bpmn:incoming>Flow_05l4cg6</bpmn:incoming>
+      <bpmn:incoming>Flow_1xzddbg</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0mevyn1" sourceRef="Event_17c5cpc" targetRef="Event_1ofc9we" />
+    <bpmn:sequenceFlow id="Flow_1bi03yp" sourceRef="Event_1ofc9we" targetRef="Gateway_1o9c3uh" />
+    <bpmn:serviceTask id="Activity_0mhtxiw" name="Turn Humidifier On">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="turn-humidity-on" retries="" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_100wi4u</bpmn:incoming>
+      <bpmn:outgoing>Flow_05l4cg6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_069m6ii" name="Turn Humidifier Off">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="turn-humidity-off" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0mrirdz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1xzddbg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_100wi4u" sourceRef="Gateway_1o9c3uh" targetRef="Activity_0mhtxiw" />
+    <bpmn:sequenceFlow id="Flow_0mrirdz" name="&#60;=0" sourceRef="Gateway_1o9c3uh" targetRef="Activity_069m6ii">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=commandType&lt;=0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_05l4cg6" sourceRef="Activity_0mhtxiw" targetRef="Event_0mpv3co" />
+    <bpmn:sequenceFlow id="Flow_1xzddbg" sourceRef="Activity_069m6ii" targetRef="Event_0mpv3co" />
+  </bpmn:process>
+  <bpmn:message id="Message_173i023" name="humidity-command-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=commandId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="humidity-command">
+      <bpmndi:BPMNEdge id="Flow_1xzddbg_di" bpmnElement="Flow_1xzddbg">
+        <di:waypoint x="540" y="260" />
+        <di:waypoint x="600" y="260" />
+        <di:waypoint x="600" y="190" />
+        <di:waypoint x="630" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05l4cg6_di" bpmnElement="Flow_05l4cg6">
+        <di:waypoint x="540" y="120" />
+        <di:waypoint x="600" y="120" />
+        <di:waypoint x="600" y="190" />
+        <di:waypoint x="632" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mrirdz_di" bpmnElement="Flow_0mrirdz">
+        <di:waypoint x="370" y="215" />
+        <di:waypoint x="370" y="260" />
+        <di:waypoint x="440" y="260" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="403" y="241" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_100wi4u_di" bpmnElement="Flow_100wi4u">
+        <di:waypoint x="370" y="165" />
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="440" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bi03yp_di" bpmnElement="Flow_1bi03yp">
+        <di:waypoint x="298" y="190" />
+        <di:waypoint x="345" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mevyn1_di" bpmnElement="Flow_0mevyn1">
+        <di:waypoint x="198" y="190" />
+        <di:waypoint x="262" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Event_17c5cpc_di" bpmnElement="Event_17c5cpc">
+        <dc:Bounds x="162" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="154" y="215" width="52" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ofc9we_di" bpmnElement="Event_1ofc9we">
+        <dc:Bounds x="262" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="255" y="215" width="51" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1o9c3uh_di" bpmnElement="Gateway_1o9c3uh" isMarkerVisible="true">
+        <dc:Bounds x="345" y="165" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="405" y="180" width="84" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mpv3co_di" bpmnElement="Event_0mpv3co">
+        <dc:Bounds x="632" y="172" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="678" y="170" width="51" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bsstq9_di" bpmnElement="Activity_0mhtxiw">
+        <dc:Bounds x="440" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1u8oc3c_di" bpmnElement="Activity_069m6ii">
+        <dc:Bounds x="440" y="220" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

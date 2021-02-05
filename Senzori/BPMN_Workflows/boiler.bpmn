@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_09tupdr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
+  <bpmn:process id="water-temp" name="Process Boiler Temp" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Boiler Cycle Starts&#10;&#10;">
+      <bpmn:outgoing>Flow_1gow2v6</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1gow2v6" sourceRef="StartEvent_1" targetRef="Activity_188a7qh" />
+    <bpmn:serviceTask id="Activity_188a7qh" name="Generate Water Temperature">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="gen-water-temp" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gow2v6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hb8cs7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_15jmbr2" name="Process Water Temp ">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="process-water-temp" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_08y0oni</bpmn:incoming>
+      <bpmn:outgoing>Flow_0m07p36</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0ti9yto" name="Send Water Temp To Client">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-water-temp-to-client" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0m07p36</bpmn:incoming>
+      <bpmn:outgoing>Flow_0mov7w8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_128b1ux" name="Boiler Cycle Ends&#10;&#10;">
+      <bpmn:incoming>Flow_06dgq43</bpmn:incoming>
+      <bpmn:incoming>Flow_0jq76n9</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1hb8cs7" sourceRef="Activity_188a7qh" targetRef="Activity_07bkcus" />
+    <bpmn:serviceTask id="Activity_07bkcus" name="Send Water Temp To Central">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-water-temp-to-central" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1hb8cs7</bpmn:incoming>
+      <bpmn:outgoing>Flow_08y0oni</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_08y0oni" sourceRef="Activity_07bkcus" targetRef="Activity_15jmbr2" />
+    <bpmn:sequenceFlow id="Flow_0m07p36" sourceRef="Activity_15jmbr2" targetRef="Activity_0ti9yto" />
+    <bpmn:sequenceFlow id="Flow_0mov7w8" sourceRef="Activity_0ti9yto" targetRef="Gateway_1qy68gh" />
+    <bpmn:exclusiveGateway id="Gateway_1qy68gh" name="Water Temp?" default="Flow_0ozcwt7">
+      <bpmn:incoming>Flow_0mov7w8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1y6cfrm</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ozcwt7</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1n48tvc</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_1t145w6" name="Send Cold Water Notification">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-cold-water-notification" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1y6cfrm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0z7zxz9</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1y6cfrm" name="&#60;=13°C" sourceRef="Gateway_1qy68gh" targetRef="Activity_1t145w6">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=podatakVrednost&lt;=13</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0ozcwt7" sourceRef="Gateway_1qy68gh" targetRef="Gateway_1pxu3mv" />
+    <bpmn:exclusiveGateway id="Gateway_1pxu3mv">
+      <bpmn:incoming>Flow_0ozcwt7</bpmn:incoming>
+      <bpmn:incoming>Flow_0z7zxz9</bpmn:incoming>
+      <bpmn:incoming>Flow_10n5omc</bpmn:incoming>
+      <bpmn:outgoing>Flow_1e974rq</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0z7zxz9" sourceRef="Activity_1t145w6" targetRef="Gateway_1pxu3mv" />
+    <bpmn:serviceTask id="Activity_1c9pax6" name="Send Hot Water Notification">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-hot-water-notification" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1n48tvc</bpmn:incoming>
+      <bpmn:outgoing>Flow_10n5omc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1n48tvc" name="&#62;=80°C" sourceRef="Gateway_1qy68gh" targetRef="Activity_1c9pax6">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=podatakVrednost&gt;=80</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_10n5omc" sourceRef="Activity_1c9pax6" targetRef="Gateway_1pxu3mv" />
+    <bpmn:serviceTask id="Activity_1wt0e2l" name="Send High Consumption Notification">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-high-consumption-notification" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1rylq3k</bpmn:incoming>
+      <bpmn:outgoing>Flow_06dgq43</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_158op05" name="High Consumption?" default="Flow_0jq76n9">
+      <bpmn:incoming>Flow_1e974rq</bpmn:incoming>
+      <bpmn:outgoing>Flow_1rylq3k</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0jq76n9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_1e974rq" sourceRef="Gateway_1pxu3mv" targetRef="Gateway_158op05" />
+    <bpmn:sequenceFlow id="Flow_1rylq3k" name="&#62;= 200J" sourceRef="Gateway_158op05" targetRef="Activity_1wt0e2l">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=potrosnjaUredjaja&gt;=200</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_06dgq43" sourceRef="Activity_1wt0e2l" targetRef="Event_128b1ux" />
+    <bpmn:sequenceFlow id="Flow_0jq76n9" sourceRef="Gateway_158op05" targetRef="Event_128b1ux" />
+  </bpmn:process>
+  <bpmn:message id="Message_1g7d6u9" name="message-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=orderId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="water-temp">
+      <bpmndi:BPMNEdge id="Flow_0mov7w8_di" bpmnElement="Flow_0mov7w8">
+        <di:waypoint x="890" y="117" />
+        <di:waypoint x="920" y="117" />
+        <di:waypoint x="920" y="280" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0m07p36_di" bpmnElement="Flow_0m07p36">
+        <di:waypoint x="710" y="117" />
+        <di:waypoint x="790" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08y0oni_di" bpmnElement="Flow_08y0oni">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="610" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hb8cs7_di" bpmnElement="Flow_1hb8cs7">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gow2v6_di" bpmnElement="Flow_1gow2v6">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1y6cfrm_di" bpmnElement="Flow_1y6cfrm">
+        <di:waypoint x="920" y="335" />
+        <di:waypoint x="920" y="540" />
+        <di:waypoint x="852" y="540" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="867" y="521" width="38" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ozcwt7_di" bpmnElement="Flow_0ozcwt7">
+        <di:waypoint x="895" y="310" />
+        <di:waypoint x="705" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0z7zxz9_di" bpmnElement="Flow_0z7zxz9">
+        <di:waypoint x="752" y="540" />
+        <di:waypoint x="680" y="540" />
+        <di:waypoint x="680" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1n48tvc_di" bpmnElement="Flow_1n48tvc">
+        <di:waypoint x="920" y="335" />
+        <di:waypoint x="920" y="420" />
+        <di:waypoint x="852" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="871" y="402" width="38" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10n5omc_di" bpmnElement="Flow_10n5omc">
+        <di:waypoint x="752" y="420" />
+        <di:waypoint x="680" y="420" />
+        <di:waypoint x="680" y="335" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1e974rq_di" bpmnElement="Flow_1e974rq">
+        <di:waypoint x="655" y="310" />
+        <di:waypoint x="585" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1rylq3k_di" bpmnElement="Flow_1rylq3k">
+        <di:waypoint x="560" y="335" />
+        <di:waypoint x="560" y="420" />
+        <di:waypoint x="489" y="420" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="508" y="404" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_06dgq43_di" bpmnElement="Flow_06dgq43">
+        <di:waypoint x="389" y="420" />
+        <di:waypoint x="320" y="420" />
+        <di:waypoint x="320" y="328" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0jq76n9_di" bpmnElement="Flow_0jq76n9">
+        <di:waypoint x="535" y="310" />
+        <di:waypoint x="338" y="310" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="168" y="142" width="59" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h8pove_di" bpmnElement="Activity_188a7qh">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t291ft_di" bpmnElement="Activity_15jmbr2">
+        <dc:Bounds x="610" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_012znjm_di" bpmnElement="Activity_0ti9yto">
+        <dc:Bounds x="790" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0im7eyl_di" bpmnElement="Activity_07bkcus">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1qy68gh_di" bpmnElement="Gateway_1qy68gh" isMarkerVisible="true">
+        <dc:Bounds x="895" y="285" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="955" y="303" width="65" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1pxu3mv_di" bpmnElement="Gateway_1pxu3mv" isMarkerVisible="true">
+        <dc:Bounds x="655" y="285" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_158op05_di" bpmnElement="Gateway_158op05" isMarkerVisible="true">
+        <dc:Bounds x="535" y="285" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="524" y="256" width="71" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_128b1ux_di" bpmnElement="Event_128b1ux">
+        <dc:Bounds x="302" y="292" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="277" y="270" width="88" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0r6wruq_di" bpmnElement="Activity_1wt0e2l">
+        <dc:Bounds x="389" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1xwf4t3_di" bpmnElement="Activity_1c9pax6">
+        <dc:Bounds x="752" y="380" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1r2aa41_di" bpmnElement="Activity_1t145w6">
+        <dc:Bounds x="752" y="500" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

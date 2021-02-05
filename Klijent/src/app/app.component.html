@@ -2,6 +2,9 @@
   <a class="navbar-brand" routerLink="">Smart House</a>
   <ul class="nav">
     <li class="nav-item">
+      <a class="nav-link" routerLink="/boiler">Boiler</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" routerLink="/klima">Klima</a>
     </li>
     <li class="nav-item">
@@ -11,17 +14,55 @@
       <a class="nav-link" routerLink="/osvezavac">Osvezavac Vazduha</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/boiler">Boiler</a>
-    </li>
-    <li class="nav-item">
       <a class="nav-link" routerLink="/tv">Tv</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" routerLink="/sijalice">Sijalice</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" routerLink="/potrosnja">Potrosnja</a>
+      <a class="nav-link" routerLink="/potrosnja">Trenutna Potrosnja</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/statistika">Statistika Potrosnje</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/obavestenja">Obavestenja</a>
     </li>
   </ul>
 </nav>
-<router-outlet></router-outlet>
+<div class="row w-100 max-height">
+  <div
+    style="height: 91vh; overflow-y: scroll;"
+    class="notifikacije ml-2 bg-dark p-2 max-height"
+  >
+    <div>
+      <button (click)="obavestenjeServis.ocisti()" class="btn btn-danger w-100 mr-1">
+        Clear Notifications
+      </button>
+    </div>
+    <div *ngIf="obavestenjeServis.nizNotifikacija.length > 0">
+      <div
+        class="rounded p-1 m-1 bg-primary text-white mt-2 mb-2"
+        *ngFor="let notification of obavestenjeServis.nizNotifikacija.reverse(); let i = index"
+        (click)="skloniNotifikaciju(i)"
+      >
+        <div>
+          <div class="row">
+            <div class="text-dark ml-3 mr-1">Uredjaj :</div>
+            <div>{{ notification.body.telo.tipUredjaja }}</div>
+          </div>
+          <div class="row">
+            <div class="text-dark ml-3 mr-1">Datum/Vreme :</div>
+            <div>{{ notification.vreme }}</div>
+          </div>
+        </div>
+        <div class="font-weight-bold font-italic">
+          {{ notification.body.message }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="w-75 ml-2">
+    <router-outlet></router-outlet>
+  </div>
+</div>

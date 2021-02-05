@@ -14,8 +14,11 @@ import { PreciscavacComponent } from './components/preciscavac/preciscavac.compo
 import { OsvezavacComponent } from './components/osvezavac/osvezavac.component';
 import { PotrosnjaComponent } from './components/potrosnja/potrosnja.component';
 import { HomeComponent } from './components/home/home.component';
-
+import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
 import { ChartsModule } from "ng2-charts";
+import { StatistikaComponent } from './components/statistika/statistika.component';
+import { ObavestenjaComponent } from './components/obavestenja/obavestenja.component';
+const config: SocketIoConfig = { url: 'http://localhost:4444', options: {} };
 
 @NgModule({
   declarations: [
@@ -27,9 +30,12 @@ import { ChartsModule } from "ng2-charts";
     PreciscavacComponent,
     OsvezavacComponent,
     PotrosnjaComponent,
-    HomeComponent
+    HomeComponent,
+    StatistikaComponent,
+    ObavestenjaComponent
   ],
   imports: [
+    SocketIoModule.forRoot(config),
     MaterialModule,
     BrowserModule,
     AppRoutingModule,
@@ -37,7 +43,8 @@ import { ChartsModule } from "ng2-charts";
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    ChartsModule
+    ChartsModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent]

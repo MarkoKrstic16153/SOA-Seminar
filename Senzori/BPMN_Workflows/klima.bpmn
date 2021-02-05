@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_09tupdr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
+  <bpmn:process id="klima-temp" name="Process Klima Temp" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Klima Cycle Starts&#10;&#10;">
+      <bpmn:outgoing>Flow_1gow2v6</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1gow2v6" sourceRef="StartEvent_1" targetRef="Activity_188a7qh" />
+    <bpmn:serviceTask id="Activity_188a7qh" name="Generate Klima Temperature">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="gen-klima-temp" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gow2v6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hb8cs7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_15jmbr2" name="Process Klima Temp ">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="process-klima-temp" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_08y0oni</bpmn:incoming>
+      <bpmn:outgoing>Flow_0m07p36</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0ti9yto" name="Send Klima Temp To Client">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-klima-temp-to-client" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0m07p36</bpmn:incoming>
+      <bpmn:outgoing>Flow_04s9ra8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_128b1ux" name="Klima Cycle Ends&#10;&#10;">
+      <bpmn:incoming>Flow_0u93z7w</bpmn:incoming>
+      <bpmn:incoming>Flow_1t98hqc</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1hb8cs7" sourceRef="Activity_188a7qh" targetRef="Activity_07bkcus" />
+    <bpmn:serviceTask id="Activity_07bkcus" name="Send Klima Temp To Central">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-klima-temp-to-central" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1hb8cs7</bpmn:incoming>
+      <bpmn:outgoing>Flow_08y0oni</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_08y0oni" sourceRef="Activity_07bkcus" targetRef="Activity_15jmbr2" />
+    <bpmn:sequenceFlow id="Flow_0m07p36" sourceRef="Activity_15jmbr2" targetRef="Activity_0ti9yto" />
+    <bpmn:serviceTask id="Activity_0clagy5" name="Send Air Conditioning High Consumption Notification">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-klima-consumption-notification" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_11eg1dw</bpmn:incoming>
+      <bpmn:outgoing>Flow_1t98hqc</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1gi411g" name="High Consumption?" default="Flow_0u93z7w">
+      <bpmn:incoming>Flow_05oopt2</bpmn:incoming>
+      <bpmn:outgoing>Flow_11eg1dw</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0u93z7w</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:exclusiveGateway id="Gateway_1knroh4">
+      <bpmn:incoming>Flow_120jy4b</bpmn:incoming>
+      <bpmn:incoming>Flow_1idno1k</bpmn:incoming>
+      <bpmn:incoming>Flow_065eyap</bpmn:incoming>
+      <bpmn:outgoing>Flow_05oopt2</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_0dcd7qg" name="Send Hot Room Notification">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-hot-room-notification" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1osrc0z</bpmn:incoming>
+      <bpmn:outgoing>Flow_065eyap</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0681ljc" name="Send Cold Room Notification">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-cold-room-notification" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0nhkt0j</bpmn:incoming>
+      <bpmn:outgoing>Flow_1idno1k</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_1ky2x4j" name="Room Temp?" default="Flow_120jy4b">
+      <bpmn:incoming>Flow_04s9ra8</bpmn:incoming>
+      <bpmn:outgoing>Flow_120jy4b</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1osrc0z</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0nhkt0j</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_11eg1dw" name="&#62;= 200J" sourceRef="Gateway_1gi411g" targetRef="Activity_0clagy5">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=potrosnjaUredjaja&gt;=200</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_05oopt2" sourceRef="Gateway_1knroh4" targetRef="Gateway_1gi411g" />
+    <bpmn:sequenceFlow id="Flow_120jy4b" sourceRef="Gateway_1ky2x4j" targetRef="Gateway_1knroh4" />
+    <bpmn:sequenceFlow id="Flow_1idno1k" sourceRef="Activity_0681ljc" targetRef="Gateway_1knroh4" />
+    <bpmn:sequenceFlow id="Flow_065eyap" sourceRef="Activity_0dcd7qg" targetRef="Gateway_1knroh4" />
+    <bpmn:sequenceFlow id="Flow_1osrc0z" name="&#62;=29°C" sourceRef="Gateway_1ky2x4j" targetRef="Activity_0dcd7qg">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=podatakVrednost&gt;=29</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0nhkt0j" name="&#60;=15°C" sourceRef="Gateway_1ky2x4j" targetRef="Activity_0681ljc">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=podatakVrednost&lt;=15</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_04s9ra8" sourceRef="Activity_0ti9yto" targetRef="Gateway_1ky2x4j" />
+    <bpmn:sequenceFlow id="Flow_0u93z7w" sourceRef="Gateway_1gi411g" targetRef="Event_128b1ux" />
+    <bpmn:sequenceFlow id="Flow_1t98hqc" sourceRef="Activity_0clagy5" targetRef="Event_128b1ux" />
+  </bpmn:process>
+  <bpmn:message id="Message_1g7d6u9" name="message-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=orderId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="klima-temp">
+      <bpmndi:BPMNEdge id="Flow_0m07p36_di" bpmnElement="Flow_0m07p36">
+        <di:waypoint x="710" y="117" />
+        <di:waypoint x="790" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08y0oni_di" bpmnElement="Flow_08y0oni">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="610" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hb8cs7_di" bpmnElement="Flow_1hb8cs7">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gow2v6_di" bpmnElement="Flow_1gow2v6">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11eg1dw_di" bpmnElement="Flow_11eg1dw">
+        <di:waypoint x="511" y="295" />
+        <di:waypoint x="511" y="380" />
+        <di:waypoint x="430" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="454" y="364" width="40" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05oopt2_di" bpmnElement="Flow_05oopt2">
+        <di:waypoint x="606" y="270" />
+        <di:waypoint x="536" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_120jy4b_di" bpmnElement="Flow_120jy4b">
+        <di:waypoint x="815" y="270" />
+        <di:waypoint x="656" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1idno1k_di" bpmnElement="Flow_1idno1k">
+        <di:waypoint x="690" y="500" />
+        <di:waypoint x="631" y="500" />
+        <di:waypoint x="631" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_065eyap_di" bpmnElement="Flow_065eyap">
+        <di:waypoint x="690" y="380" />
+        <di:waypoint x="631" y="380" />
+        <di:waypoint x="631" y="295" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1osrc0z_di" bpmnElement="Flow_1osrc0z">
+        <di:waypoint x="840" y="295" />
+        <di:waypoint x="840" y="380" />
+        <di:waypoint x="790" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="799" y="362" width="38" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nhkt0j_di" bpmnElement="Flow_0nhkt0j">
+        <di:waypoint x="840" y="295" />
+        <di:waypoint x="840" y="500" />
+        <di:waypoint x="790" y="500" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="798" y="481" width="38" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_04s9ra8_di" bpmnElement="Flow_04s9ra8">
+        <di:waypoint x="840" y="157" />
+        <di:waypoint x="840" y="245" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0u93z7w_di" bpmnElement="Flow_0u93z7w">
+        <di:waypoint x="486" y="270" />
+        <di:waypoint x="268" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1t98hqc_di" bpmnElement="Flow_1t98hqc">
+        <di:waypoint x="330" y="380" />
+        <di:waypoint x="250" y="380" />
+        <di:waypoint x="250" y="288" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="170" y="142" width="58" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h8pove_di" bpmnElement="Activity_188a7qh">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t291ft_di" bpmnElement="Activity_15jmbr2">
+        <dc:Bounds x="610" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_012znjm_di" bpmnElement="Activity_0ti9yto">
+        <dc:Bounds x="790" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0im7eyl_di" bpmnElement="Activity_07bkcus">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1gi411g_di" bpmnElement="Gateway_1gi411g" isMarkerVisible="true">
+        <dc:Bounds x="486" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="475" y="216" width="71" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1knroh4_di" bpmnElement="Gateway_1knroh4" isMarkerVisible="true">
+        <dc:Bounds x="606" y="245" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1ky2x4j_di" bpmnElement="Gateway_1ky2x4j" isMarkerVisible="true">
+        <dc:Bounds x="815" y="245" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="876" y="263" width="66" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0dcd7qg_di" bpmnElement="Activity_0dcd7qg">
+        <dc:Bounds x="690" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0681ljc_di" bpmnElement="Activity_0681ljc">
+        <dc:Bounds x="690" y="460" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_128b1ux_di" bpmnElement="Event_128b1ux">
+        <dc:Bounds x="232" y="252" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="208" y="222" width="87" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0clagy5_di" bpmnElement="Activity_0clagy5">
+        <dc:Bounds x="330" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

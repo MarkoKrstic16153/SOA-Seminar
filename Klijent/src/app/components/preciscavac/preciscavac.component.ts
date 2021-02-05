@@ -28,23 +28,55 @@ export class PreciscavacComponent implements OnInit {
   constructor(private preciscavacService : PreciscavacService) { }
 
   ngOnInit() {
+    let i;    
+      let niz : any[] = [];
+    for(i=0;i<this.preciscavacService.temp.length;i++){
+      niz.push(this.preciscavacService.temp[i]);
+    }
+    this.chartDatasets = [
+      { data:niz, label: 'Zagadjenost Vazduha' },
+    ];
+    this.chartLabels = [];
+    for(let i=0;i<niz.length;i++)
+        this.chartLabels.push(i+1);
     interval(3000).subscribe(()=>{
-      let niz : any[] = this.preciscavacService.temp;
+      let i;    
+      let niz : any[] = [];
+    for(i=0;i<this.preciscavacService.temp.length;i++){
+      niz.push(this.preciscavacService.temp[i]);
+    }
       this.chartDatasets = [
-        { data:niz, label: 'Temperatura Sobe' },
+        { data:niz, label: 'Zagadjenost Vazduha' },
       ];
       this.chartLabels = [];
-      for(let i=0;i<this.preciscavacService.temp.length;i++)
+      for(let i=0;i<niz.length;i++)
           this.chartLabels.push(i+1);
     });
   }
 
   ukljuci(){
-    this.preciscavacService.ukljuciPreciscavac();
+    let onCommand : any = {
+      vrstaKomande : 1,
+      vrednostKomande : 0
+    };
+    this.preciscavacService.issueCommand(onCommand);
   }
 
   ugasi(){
-    this.preciscavacService.ugasiPreciscavac();
+    let offCommand : any = {
+      vrstaKomande : 0,
+      vrednostKomande : 0,
+    };
+    this.preciscavacService.issueCommand(offCommand);
+  }
+
+  stanje(){
+    if(this.preciscavacService.preciscavacData.stanjeUredjaja == true){
+      return "Ukljucen";
+    }
+    else {
+      return "Iskljucen";
+    }
   }
 
 }

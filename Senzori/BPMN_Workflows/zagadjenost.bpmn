@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_09tupdr" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
+  <bpmn:process id="pollution" name="Process Pollution" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Pollution Cycle Starts&#10;&#10;&#10;">
+      <bpmn:outgoing>Flow_1gow2v6</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow_1gow2v6" sourceRef="StartEvent_1" targetRef="Activity_188a7qh" />
+    <bpmn:serviceTask id="Activity_188a7qh" name="Generate Pollution Data">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="gen-pollution" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gow2v6</bpmn:incoming>
+      <bpmn:outgoing>Flow_1hb8cs7</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_15jmbr2" name="Process Pollution ">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="process-pollution" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_08y0oni</bpmn:incoming>
+      <bpmn:outgoing>Flow_0m07p36</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_0ti9yto" name="Send Pollution Data To Client">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-pollution-to-client" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0m07p36</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wb9aig</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1hb8cs7" sourceRef="Activity_188a7qh" targetRef="Activity_07bkcus" />
+    <bpmn:serviceTask id="Activity_07bkcus" name="Send Pollution Data To Central">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-pollution-to-central" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1hb8cs7</bpmn:incoming>
+      <bpmn:outgoing>Flow_08y0oni</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_08y0oni" sourceRef="Activity_07bkcus" targetRef="Activity_15jmbr2" />
+    <bpmn:sequenceFlow id="Flow_0m07p36" sourceRef="Activity_15jmbr2" targetRef="Activity_0ti9yto" />
+    <bpmn:exclusiveGateway id="Gateway_1a3mna1" name="High Pollution?" default="Flow_1x8mej9">
+      <bpmn:incoming>Flow_1wb9aig</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hjxouv</bpmn:outgoing>
+      <bpmn:outgoing>Flow_1x8mej9</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Activity_1s5nvyk" name="Send High Pollution Notification">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="send-high-pollution-notification" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0hjxouv</bpmn:incoming>
+      <bpmn:outgoing>Flow_0sjpypm</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="Event_0dy59fp" name="Pollution Cycle Ends&#10;">
+      <bpmn:incoming>Flow_1x8mej9</bpmn:incoming>
+      <bpmn:incoming>Flow_0sjpypm</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0hjxouv" name="&#62;= 150ppm" sourceRef="Gateway_1a3mna1" targetRef="Activity_1s5nvyk">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=podatakVrednost&gt;=150</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_1x8mej9" sourceRef="Gateway_1a3mna1" targetRef="Event_0dy59fp" />
+    <bpmn:sequenceFlow id="Flow_0sjpypm" sourceRef="Activity_1s5nvyk" targetRef="Event_0dy59fp" />
+    <bpmn:sequenceFlow id="Flow_1wb9aig" sourceRef="Activity_0ti9yto" targetRef="Gateway_1a3mna1" />
+  </bpmn:process>
+  <bpmn:message id="Message_1g7d6u9" name="message-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=orderId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="pollution">
+      <bpmndi:BPMNEdge id="Flow_0m07p36_di" bpmnElement="Flow_0m07p36">
+        <di:waypoint x="710" y="117" />
+        <di:waypoint x="790" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_08y0oni_di" bpmnElement="Flow_08y0oni">
+        <di:waypoint x="530" y="117" />
+        <di:waypoint x="610" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1hb8cs7_di" bpmnElement="Flow_1hb8cs7">
+        <di:waypoint x="370" y="117" />
+        <di:waypoint x="430" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gow2v6_di" bpmnElement="Flow_1gow2v6">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="270" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hjxouv_di" bpmnElement="Flow_0hjxouv">
+        <di:waypoint x="840" y="315" />
+        <di:waypoint x="840" y="400" />
+        <di:waypoint x="750" y="400" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="773" y="384" width="56" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x8mej9_di" bpmnElement="Flow_1x8mej9">
+        <di:waypoint x="815" y="290" />
+        <di:waypoint x="588" y="290" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0sjpypm_di" bpmnElement="Flow_0sjpypm">
+        <di:waypoint x="650" y="400" />
+        <di:waypoint x="570" y="400" />
+        <di:waypoint x="570" y="308" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wb9aig_di" bpmnElement="Flow_1wb9aig">
+        <di:waypoint x="840" y="157" />
+        <di:waypoint x="840" y="265" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="163" y="142" width="73" height="66" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1h8pove_di" bpmnElement="Activity_188a7qh">
+        <dc:Bounds x="270" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1t291ft_di" bpmnElement="Activity_15jmbr2">
+        <dc:Bounds x="610" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_012znjm_di" bpmnElement="Activity_0ti9yto">
+        <dc:Bounds x="790" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0im7eyl_di" bpmnElement="Activity_07bkcus">
+        <dc:Bounds x="430" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1s5nvyk_di" bpmnElement="Activity_1s5nvyk">
+        <dc:Bounds x="650" y="360" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dy59fp_di" bpmnElement="Event_0dy59fp">
+        <dc:Bounds x="552" y="272" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="533" y="233" width="73" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_1a3mna1_di" bpmnElement="Gateway_1a3mna1" isMarkerVisible="true">
+        <dc:Bounds x="815" y="265" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="874" y="276" width="74" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

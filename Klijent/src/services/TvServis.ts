@@ -1,33 +1,37 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, interval } from 'rxjs';
 
 @Injectable({providedIn: 'root'})
 export class TvService {
-    urlTv:string = "http://localhost:3000/tvs/"
-    public tvData:any = [];
-    constructor(private httpClient: HttpClient) {
-        interval(3000).subscribe(()=>{
-            this.getTemp();
-        });
-     }
-    
-     getTemp(){
-        this.httpClient.get(this.urlTv+"1").subscribe((data:any)=>{
-            this.tvData = data;
-        });
-     }
+    urlTv:string = "http://localhost:3033/tv/"
+    public tvData:any = {};
+    constructor(private httpClient: HttpClient) {}
 
-     ukljuciTv1(){
-        this.httpClient.get(this.urlTv+"ukljucitv")
-        .subscribe(()=>{
-            console.log('Tv Ukljucen');
-        })
-     }
+    issueCommand(command : any){
+        const headers = new HttpHeaders()
+        .set('Authorization', 'my-auth-token')
+        .set('Content-Type', 'application/json');
+        this.httpClient.post(this.urlTv, command, {headers:headers})
+            .subscribe(()=>{
+                console.log('TV Command Izvrsena!');
+            })
+    }
 
-     ugasiTv1(){
-        this.httpClient.get(this.urlTv+"ugasitv").subscribe(()=>{
-            console.log('Tv Ugasen');
-        })
-     }
+    getCurrentChannel(){
+        let pom : number =  this.tvData.podatakVrednost.split(" ")[0];
+        return pom;
+    }
+
+    getCurrentChannelName(){
+        let pomNiz = [];
+        let pom : String =  this.tvData.podatakVrednost;
+        if(pom === "-1 ")
+            return "/";
+        else {
+            pomNiz = pom.split(" ");
+            pomNiz[0] = (Number(pom.split(" ")[0]) + 1);
+            return pomNiz.join(" ");
+        }
+    }
 }

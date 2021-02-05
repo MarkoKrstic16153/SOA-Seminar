@@ -1,0 +1,39 @@
+<h1 class="m-3 p-4" style="font-size: 5vw;">Dnevnik Obavestenja</h1>
+<div class="p-2 mt-4">
+  <div class="pb-2 bg-dark rounded">
+    <button class="btn-success btn mt-2 ml-2" (click)="setFilter(1)">
+        Boiler Filter
+    </button>
+    <button class="btn-success btn mt-2 ml-2" (click)="setFilter(2)">
+        Klima Filter
+    </button>
+    <button class="btn-success btn mt-2 ml-2" (click)="setFilter(3)">
+        Preciscavac Filter
+    </button>
+    <button class="btn-success btn mt-2 ml-2" (click)="setFilter(4)">
+        Osvezavac Filter
+    </button>
+    <button class="btn-danger btn mt-2 ml-2" (click)="setFilter(0)">
+      Clear Filter
+    </button>
+  </div>
+  <div style="height: 100vh; overflow-y: scroll;" class="border">
+    <div *ngIf="obavestenjeServis.nizObavestenja.length > 0">
+      <div
+        *ngFor="
+          let notification of returnValid(obavestenjeServis.nizObavestenja);
+          let i = index
+        "
+      >
+        <div class="border rounded m-2 p-2">
+          <div>
+            Tip Uredjaja : {{ notification.body.telo.tipUredjaja }} Date/Time :{{
+                notification.vreme
+            }}
+          </div>
+          <div>{{ notification.body.message }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

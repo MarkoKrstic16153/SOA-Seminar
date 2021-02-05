@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_0rz87t1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Zeebe Modeler" exporterVersion="0.10.0">
+  <bpmn:process id="sijalica-command" name="Sijalica Controls" isExecutable="true">
+    <bpmn:startEvent id="Event_17c5cpc" name="LightBulb Command Generated&#10;&#10;&#10;">
+      <bpmn:outgoing>Flow_0mevyn1</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:intermediateCatchEvent id="Event_1ofc9we" name="Command Received&#10;&#10;">
+      <bpmn:incoming>Flow_0mevyn1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1bi03yp</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0ti5vsx" messageRef="Message_173i023" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:exclusiveGateway id="Gateway_1o9c3uh" name="Command Type?&#10;&#10;" default="Flow_100wi4u">
+      <bpmn:incoming>Flow_1bi03yp</bpmn:incoming>
+      <bpmn:outgoing>Flow_100wi4u</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0mrirdz</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0b48fqm</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0esgl4f</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event_0mpv3co" name="LightBulb Command Executed">
+      <bpmn:incoming>Flow_05l4cg6</bpmn:incoming>
+      <bpmn:incoming>Flow_1xzddbg</bpmn:incoming>
+      <bpmn:incoming>Flow_0vripdl</bpmn:incoming>
+      <bpmn:incoming>Flow_0fzsp3m</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0mevyn1" sourceRef="Event_17c5cpc" targetRef="Event_1ofc9we" />
+    <bpmn:sequenceFlow id="Flow_1bi03yp" sourceRef="Event_1ofc9we" targetRef="Gateway_1o9c3uh" />
+    <bpmn:serviceTask id="Activity_0mhtxiw" name="Turn One LightBulb On">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="turn-sijalica-on" retries="" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_100wi4u</bpmn:incoming>
+      <bpmn:outgoing>Flow_05l4cg6</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_069m6ii" name="Turn One LightBulb Off">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="turn-sijalica-off" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0mrirdz</bpmn:incoming>
+      <bpmn:outgoing>Flow_1xzddbg</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_100wi4u" sourceRef="Gateway_1o9c3uh" targetRef="Activity_0mhtxiw" />
+    <bpmn:sequenceFlow id="Flow_0mrirdz" name="&#60;=0" sourceRef="Gateway_1o9c3uh" targetRef="Activity_069m6ii">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=commandType&lt;=0</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_05l4cg6" sourceRef="Activity_0mhtxiw" targetRef="Event_0mpv3co" />
+    <bpmn:sequenceFlow id="Flow_1xzddbg" sourceRef="Activity_069m6ii" targetRef="Event_0mpv3co" />
+    <bpmn:serviceTask id="Activity_02rrws9" name="Turn All LightBulbs On">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="turn-all-sijalica-on" retries="" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0b48fqm</bpmn:incoming>
+      <bpmn:outgoing>Flow_0vripdl</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Activity_1o9uu4h" name="Turn All LightBulbs Off">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="turn-all-sijalica-off" retries="" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0esgl4f</bpmn:incoming>
+      <bpmn:outgoing>Flow_0fzsp3m</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0b48fqm" name="=2" sourceRef="Gateway_1o9c3uh" targetRef="Activity_02rrws9">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=commandType=2</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0esgl4f" name="=1" sourceRef="Gateway_1o9c3uh" targetRef="Activity_1o9uu4h">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">=commandType=1</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_0vripdl" sourceRef="Activity_02rrws9" targetRef="Event_0mpv3co" />
+    <bpmn:sequenceFlow id="Flow_0fzsp3m" sourceRef="Activity_1o9uu4h" targetRef="Event_0mpv3co" />
+  </bpmn:process>
+  <bpmn:message id="Message_173i023" name="sijalica-command-received">
+    <bpmn:extensionElements>
+      <zeebe:subscription correlationKey="=commandId" />
+    </bpmn:extensionElements>
+  </bpmn:message>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="sijalica-command">
+      <bpmndi:BPMNEdge id="Flow_1xzddbg_di" bpmnElement="Flow_1xzddbg">
+        <di:waypoint x="540" y="480" />
+        <di:waypoint x="600" y="480" />
+        <di:waypoint x="600" y="300" />
+        <di:waypoint x="632" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05l4cg6_di" bpmnElement="Flow_05l4cg6">
+        <di:waypoint x="540" y="120" />
+        <di:waypoint x="600" y="120" />
+        <di:waypoint x="600" y="300" />
+        <di:waypoint x="632" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mrirdz_di" bpmnElement="Flow_0mrirdz">
+        <di:waypoint x="370" y="325" />
+        <di:waypoint x="370" y="480" />
+        <di:waypoint x="440" y="480" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="403" y="461" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_100wi4u_di" bpmnElement="Flow_100wi4u">
+        <di:waypoint x="370" y="275" />
+        <di:waypoint x="370" y="120" />
+        <di:waypoint x="440" y="120" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1bi03yp_di" bpmnElement="Flow_1bi03yp">
+        <di:waypoint x="298" y="300" />
+        <di:waypoint x="345" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0mevyn1_di" bpmnElement="Flow_0mevyn1">
+        <di:waypoint x="198" y="300" />
+        <di:waypoint x="262" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b48fqm_di" bpmnElement="Flow_0b48fqm">
+        <di:waypoint x="390" y="295" />
+        <di:waypoint x="390" y="230" />
+        <di:waypoint x="440" y="230" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="410" y="213" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0esgl4f_di" bpmnElement="Flow_0esgl4f">
+        <di:waypoint x="390" y="305" />
+        <di:waypoint x="390" y="380" />
+        <di:waypoint x="440" y="380" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="409" y="363" width="13" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vripdl_di" bpmnElement="Flow_0vripdl">
+        <di:waypoint x="540" y="230" />
+        <di:waypoint x="580" y="230" />
+        <di:waypoint x="580" y="300" />
+        <di:waypoint x="632" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0fzsp3m_di" bpmnElement="Flow_0fzsp3m">
+        <di:waypoint x="540" y="380" />
+        <di:waypoint x="580" y="380" />
+        <di:waypoint x="580" y="300" />
+        <di:waypoint x="632" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_1o9c3uh_di" bpmnElement="Gateway_1o9c3uh" isMarkerVisible="true">
+        <dc:Bounds x="345" y="275" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="398" y="290" width="84" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ofc9we_di" bpmnElement="Event_1ofc9we">
+        <dc:Bounds x="262" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="255" y="325" width="51" height="53" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17c5cpc_di" bpmnElement="Event_17c5cpc">
+        <dc:Bounds x="162" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="156" y="325" width="52" height="80" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0mpv3co_di" bpmnElement="Event_0mpv3co">
+        <dc:Bounds x="632" y="282" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="679" y="280" width="51" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0bsstq9_di" bpmnElement="Activity_0mhtxiw">
+        <dc:Bounds x="440" y="80" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_02rrws9_di" bpmnElement="Activity_02rrws9">
+        <dc:Bounds x="440" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1u8oc3c_di" bpmnElement="Activity_069m6ii">
+        <dc:Bounds x="440" y="440" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1o9uu4h_di" bpmnElement="Activity_1o9uu4h">
+        <dc:Bounds x="440" y="340" width="100" height="80" />
+      </bpmndi:BPMNShape>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

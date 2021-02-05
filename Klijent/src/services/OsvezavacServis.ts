@@ -1,38 +1,29 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, interval } from 'rxjs';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class OsvezavacService {
-    urlOsvezavac:string = "http://localhost:3000/osvezavacs/"
-    public osvezavacData:any = [];
+    urlOsvezavac:string = "http://localhost:3033/osvezavac/"
+    public osvezavacData:any = {};
     public temp:any[] = [];
-    constructor(private httpClient: HttpClient) {
-        interval(3000).subscribe(()=>{
-            this.getTemp();
-        });
-     }
-    
-     getTemp(){
-        this.httpClient.get(this.urlOsvezavac+"1").subscribe((data:any)=>{
-            this.osvezavacData = data;
-            this.temp.push(this.osvezavacData.Vlaz);
-            if(this.temp.length>10){
-                this.temp.splice(0,1);
-            }
-        });
-     }
+    constructor(private httpClient: HttpClient) {}
 
-     ukljuciOsvezavac(temp:number){
-        this.httpClient.get(this.urlOsvezavac+"ukljuci/"+temp)
-        .subscribe(()=>{
-            console.log('Osvezavac Ukljucen');
-        })
-     }
+    issueCommand(command : any){
+        const headers = new HttpHeaders()
+        .set('Authorization', 'my-auth-token')
+        .set('Content-Type', 'application/json');
+        this.httpClient.post(this.urlOsvezavac, command, {headers:headers})
+            .subscribe(()=>{
+                console.log('Osvezavac Command Izvrsena!');
+            })
+    }
 
-     ugasiOsvezavac(){
-        this.httpClient.get(this.urlOsvezavac+"ugasi").subscribe(()=>{
-            console.log('Osvezavac Ugasen');
-        })
-     }
+    dodajNovoMerenje(vrednost){
+        this.temp.push(vrednost);
+        if(this.temp.length > 30){
+            this.temp.shift();
+        }
+    }
 }

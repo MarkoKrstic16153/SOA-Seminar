@@ -1,6 +1,0 @@
-{
-  "name": "Osvezavac",
-  "connector": "memory",
-  "localStorage": "",
-  "file": "./data/osvezavac.json"
-}

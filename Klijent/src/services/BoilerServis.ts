@@ -1,38 +1,30 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, interval } from 'rxjs';
+import { Command } from 'protractor';
+import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({providedIn: 'root'})
 export class BoilerService {
-    urlBoiler:string = "http://localhost:3000/boilers/"
-    public boilerTemp:any = [];
+    urlBoiler:string = "http://localhost:3033/boiler";
+    public boilerTemp:any = {};
     public temp:any[] = [];
-    constructor(private httpClient: HttpClient) {
-        interval(3000).subscribe(()=>{
-            this.getTemp();
-        });
-     }
-    
-     getTemp(){
-        this.httpClient.get(this.urlBoiler+"1").subscribe((data:any)=>{
-            this.boilerTemp = data;
-            this.temp.push(data.Voda);
-            if(this.temp.length>10){
-                this.temp.splice(0,1);
-            }
-        });
-     }
+    constructor(private httpClient: HttpClient) {}
 
-     ukljuciBoiler(temp:number){
-        this.httpClient.get(this.urlBoiler+"ukljuci/"+temp)
-        .subscribe(()=>{
-            console.log('Boiler Ukljucen');
-        })
-     }
+    issueCommand(command : any){
+        const headers = new HttpHeaders()
+        .set('Authorization', 'my-auth-token')
+        .set('Content-Type', 'application/json');
+        this.httpClient.post(this.urlBoiler, command, {headers:headers})
+            .subscribe(()=>{
+                console.log('Boiler Command Izvrsena!');
+            })
+    }
 
-     ugasiBoiler(){
-        this.httpClient.get(this.urlBoiler+"ugasi").subscribe(()=>{
-            console.log('Boiler Ugasen');
-        })
-     }
+    dodajNovoMerenje(vrednost){
+        this.temp.push(vrednost);
+        if(this.temp.length > 30){
+            this.temp.shift();
+        }
+    }
 }

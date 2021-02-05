@@ -32,22 +32,55 @@ export class KlimaComponent implements OnInit {
 
   ngOnInit() {
     interval(3000).subscribe(()=>{
-      let niz : any[] = this.klimaService.temp;
+      let i;    
+      let niz : any[] = [];
+      for(i=0;i<this.klimaService.temp.length;i++){
+        niz.push(this.klimaService.temp[i]);
+      }
       this.chartDatasets = [
         { data:niz, label: 'Temperatura Sobe' },
       ];
       this.chartLabels = [];
-      for(let i=0;i<this.klimaService.temp.length;i++)
+      for(let i=0;i<niz.length;i++)
           this.chartLabels.push(i+1);
     });
+    let i;    
+      let niz : any[] = [];
+    for(i=0;i<this.klimaService.temp.length;i++){
+      niz.push(this.klimaService.temp[i]);
+    }
+    this.chartDatasets = [
+      { data:niz, label: 'Temperatura Sobe' },
+    ];
+    this.chartLabels = [];
+    for(let i=0;i<niz.length;i++)
+        this.chartLabels.push(i+1);
+
   }
 
-  ukljuci(){
-    this.klimaService.ukljuciKlimu(this.tempControl.value);
+  stanje(){
+    if(this.klimaService.klimaTemp.stanjeUredjaja == true){
+      return "Ukljucen";
+    }
+    else {
+      return "Iskljucen";
+    }
+  }
+
+  ukljuci(){    
+    let onCommand : any = {
+      vrstaKomande : 1,
+      vrednostKomande : this.tempControl.value,
+    };
+    this.klimaService.issueCommand(onCommand);
   }
 
   ugasi(){
-    this.klimaService.ugasiKlimu();
+    let offCommand : any = {
+      vrstaKomande : 0,
+      vrednostKomande : 0
+    };
+    this.klimaService.issueCommand(offCommand);
   }
 
 }

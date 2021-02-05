@@ -11,7 +11,7 @@
       </button>
     </div>
     <div class="p-2">
-      <div style="display: block;">
+      <div *ngIf="preciscavacService.temp.length > 0" style="display: block;">
         <canvas
           baseChart
           [chartType]="chartType"
@@ -26,11 +26,10 @@
     </div>
 
     <div class="m-3">
-      Max Zagadjenost : {{ preciscavacService.preciscavacData.MaxZag }}C, Min
-      Zagadjenost : {{ preciscavacService.preciscavacData.MinZag }}C.
+      Trenutna Zagadjenost Vazduha: {{ preciscavacService.preciscavacData.podatakVrednost.toFixed(1)}}ppm.       Potrosena Energija Danas: {{ preciscavacService.preciscavacData.potrosnjaUredjaja.toFixed(1) }}J.
     </div>
     <div class="m-3">
-      Vreme Rada : {{ preciscavacService.preciscavacData.VremeRada }}.
+      Vreme Rada Danas: {{ (preciscavacService.preciscavacData.potrosnjaUredjaja / 1).toFixed(1)}}.    Stanje Uredjaja: {{ stanje()}}.
     </div>
   </div>
 </div>

@@ -8,6 +8,8 @@ import { OsvezavacComponent } from './components/osvezavac/osvezavac.component';
 import { SijaliceComponent } from './components/sijalice/sijalice.component';
 import { PotrosnjaComponent } from './components/potrosnja/potrosnja.component';
 import { HomeComponent } from './components/home/home.component';
+import { ObavestenjaComponent } from './components/obavestenja/obavestenja.component';
+import { StatistikaComponent } from './components/statistika/statistika.component';
 
 
 const routes: Routes = [
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: "osvezavac", component: OsvezavacComponent },
   { path: "sijalice", component: SijaliceComponent },
   { path: "potrosnja", component: PotrosnjaComponent },
+  { path: "statistika", component: StatistikaComponent },
+  { path: "obavestenja", component: ObavestenjaComponent },
   { path: "", component:  HomeComponent},
 ];
 
