@@ -24,7 +24,7 @@
     "concurrently": "^5.3.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
-    "redis": "^3.0.2",
+    "redis": "^3.1.1",
     "rxjs": "^6.5.4",
     "socket.io": "^2.3.0",
     "zeebe-node": "^0.25.0"
