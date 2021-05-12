@@ -22,7 +22,7 @@
     "@angular/platform-browser-dynamic": "~8.2.14",
     "@angular/router": "~8.2.14",
     "bootstrap": "^4.4.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "ng2-charts": "^2.3.0",
     "ngx-bootstrap": "^5.5.0",
     "ngx-socket-io": "^3.2.0",
